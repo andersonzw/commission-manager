@@ -5,6 +5,7 @@ box-sizing: border-box;
 body {
   background-color: rgb(243, 243, 243);
   margin: 0;
+  font-family: 'Kiwi Maru', serif;
 }
 
 .paddings {

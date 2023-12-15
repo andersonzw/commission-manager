@@ -1,13 +1,21 @@
+import { useSelector } from "react-redux";
 import "./Sidebar.css";
+import { selectComList } from "../../util/store/commissionSlice";
 const Sidebar = () => {
+  const commissionList = useSelector(selectComList);
   return (
     <section className="inner-paddings sidebar-section">
+      <h1>Commission List</h1>
+      <div>
+        {commissionList.map((com, i) => (
+          <div className = "commission-preview" key={i}>
+            <span>{com.name}</span>
+            <span>{com.deadline}</span>
+            <span>{com.price}</span>
+          </div>
+        ))}
+      </div>
       <h1>Work in Progress</h1>
-      <ul>
-        <l1>Com1</l1>
-        <l1>Com2</l1>
-        <l1>Com3</l1>
-      </ul>
       <h1>Completed</h1>
       <h1>Not Accepted</h1>
       <h1>Terminated</h1>
