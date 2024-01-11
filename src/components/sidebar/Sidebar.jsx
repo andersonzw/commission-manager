@@ -10,8 +10,8 @@ const Sidebar = () => {
         {commissionList.map((com, i) => (
           <div className = "commission-preview" key={i}>
             <span>{com.name}</span>
-            <span>{com.deadline}</span>
-            <span>{com.price}</span>
+            <span>{com.date}</span>
+            <span>${com.price}</span>
           </div>
         ))}
       </div>

@@ -1,4 +1,5 @@
 .add-commission-section {
+    position: relative;
   height: 100%;
   background: white;
   max-width: 780px;
@@ -7,9 +8,28 @@
   padding: 2rem 4rem;
 }
 
+.add-commission-form {
+    display: flex;
+    flex-direction: column;
+    
+}
+
 .textarea {
     height: 400px;
     width: 100%;
+    
+}
+.textarea-container {
+    position:  relative;
+}
+
+.char-count {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    opacity: 0.3;
+    font-size: smaller;
+    
 }
 
 .submit-button {
@@ -18,4 +38,13 @@
 .commission-preview {
     display: flex;
     justify-content: space-between;
+}
+
+#name {
+    width: 50%;
+}
+
+.demo-button {
+    position: absolute;
+    right: 50px;
 }
