@@ -26,10 +26,21 @@ const AddCommission = () => {
     selected: "Completed",
     source: "www.google.com",
     name: "Meow",
-  }
+  };
   const [formValues, setFormValues] = useState(INIT_FORM);
 
   const handleSubmit = (e) => {
+    const generateUniqueID = () => {
+      // Get the current time in milliseconds
+      const currentTime = new Date().getTime();
+
+      // Extract the last 6 digits from the current time
+      const last6Digits = currentTime.toString().slice(-6);
+
+      // Return the generated ID
+      return last6Digits;
+    };
+
     e.preventDefault();
     const select = e.currentTarget;
     const price = select.price.value;
@@ -46,24 +57,27 @@ const AddCommission = () => {
       status: status,
       source: source,
       name: name,
+      id: generateUniqueID(),
     };
     // add commission to commission store
     dispatch(addCommissionToList(commissionObject));
     // clear form
     setFormValues(INIT_FORM);
+
+    console.log({ commissionObject });
   };
 
   const handleTextAreaInput = (e) => {
-    setCharCount(MAXCHARACTERS - e.currentTarget.value.length)
+    setCharCount(MAXCHARACTERS - e.currentTarget.value.length);
     console.log(charCount);
   };
 
   const handleDemoClick = () => {
-    setFormValues(DEMO_FORM)
+    setFormValues(DEMO_FORM);
   };
 
   return (
-    <div className="add-commission-section">
+    <section className="commission-section">
       <button onClick={handleDemoClick} className="demo-button">
         Demo Prefill
       </button>
@@ -71,6 +85,7 @@ const AddCommission = () => {
       <form className="add-commission-form" onSubmit={handleSubmit}>
         <label htmlFor="name">Requester Name</label>
         <input
+          required
           type="text"
           name="name"
           id="name"
@@ -83,6 +98,7 @@ const AddCommission = () => {
         <label htmlFor="description">Commission Content</label>
         <div className="textarea-container">
           <textarea
+            required
             style={{ resize: "none" }}
             className="textarea"
             name="description"
@@ -101,6 +117,7 @@ const AddCommission = () => {
 
         <label htmlFor="date">Deadline</label>
         <input
+          required
           type="date"
           name="date"
           id="date"
@@ -112,6 +129,7 @@ const AddCommission = () => {
 
         <label htmlFor="price">Price</label>
         <input
+          required
           type="number"
           name="price"
           id="price"
@@ -133,9 +151,14 @@ const AddCommission = () => {
         />
 
         <label htmlFor="status">Completion Status</label>
-        <select name="status" id="status" value={formValues.selected} onChange={(e) => {
+        <select
+          name="status"
+          id="status"
+          value={formValues.selected}
+          onChange={(e) => {
             setFormValues({ ...formValues, selected: e.target.value });
-          }}>
+          }}
+        >
           <option value="Accepted/WIP">Accepted/WIP</option>
           <option value="Completed">Completed</option>
           <option value="Declined">Declined</option>
@@ -144,7 +167,7 @@ const AddCommission = () => {
           Add
         </button>
       </form>
-    </div>
+    </section>
   );
 };
 

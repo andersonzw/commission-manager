@@ -10,6 +10,7 @@ const INITIAL_STATE = {
       status: "Completed",
       source: "",
       name: "Bob",
+      id: "01"
     },
     {
       price: "200",
@@ -19,6 +20,8 @@ const INITIAL_STATE = {
       status: "Completed",
       source: "",
       name: "Jess",
+      id: "02"
+
     },
     {
       price: "80",
@@ -28,6 +31,8 @@ const INITIAL_STATE = {
       status: "Completed",
       source: "",
       name: "Cat",
+      id: "03"
+
     },
   ],
 };

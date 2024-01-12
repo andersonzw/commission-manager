@@ -3,4 +3,7 @@
     width: 254px;
     border-radius: 10px;
     height: 100%;
+    display: flex;
+    flex-direction: column;
+    
 }
