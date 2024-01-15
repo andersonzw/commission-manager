@@ -1,0 +1,64 @@
+
+.commission-section > .header { 
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1rem;
+
+}
+
+.secondary-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.status {
+    display: flex;
+    justify-content: center;
+    border-radius: 20px;
+    padding: 0 1rem;
+    line-height: 0.2rem;
+    color: white;
+
+}
+
+.status.Completed {
+    background-color: rgb(89, 212, 136);
+}
+
+.status.Declined {
+    background-color: rgb(228, 78, 78);
+}
+
+.status.Accepted\/WIP {
+    background-color: rgb(228, 205, 78);
+}
+
+.price {
+    padding: 0.2rem 1rem;
+    font-size: 1rem;
+    background-color: rgb(165, 169, 172);
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+}
+.button-container {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+.button-container > *{
+}
+
+.description {
+    white-space: pre-line;
+}
+
+.image-container {
+    height: 200px;
+    width: 100%;
+    display: flex;
+}
+

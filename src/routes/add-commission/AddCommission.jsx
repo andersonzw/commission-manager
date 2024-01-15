@@ -28,7 +28,7 @@ const AddCommission = () => {
     name: "Meow",
   };
   const [formValues, setFormValues] = useState(INIT_FORM);
-
+  const [selectedImages, setSelectedImages] = useState([])
   const handleSubmit = (e) => {
     const generateUniqueID = () => {
       // Get the current time in milliseconds
@@ -58,6 +58,7 @@ const AddCommission = () => {
       source: source,
       name: name,
       id: generateUniqueID(),
+      refImage: selectedImages
     };
     // add commission to commission store
     dispatch(addCommissionToList(commissionObject));
@@ -74,6 +75,29 @@ const AddCommission = () => {
 
   const handleDemoClick = () => {
     setFormValues(DEMO_FORM);
+  };
+
+  const handleImageChange = (e) => {
+    const files = e.target.files;
+    console.log(files);
+
+    // convert FileList object to an array of URLS
+    const imageArray = Array.from(files).map((file) => {
+      const reader = new FileReader();
+      return new Promise((resolve)=>{
+        reader.onloadend = () => {
+          resolve(reader.result);
+        }
+        reader.readAsDataURL(file)
+      })
+    });
+
+    // Set the selected images once all urls are resolved
+    Promise.all(imageArray).then((urls)=>{
+      setSelectedImages(urls)
+    })
+    console.log({selectedImages});
+
   };
 
   return (
@@ -163,6 +187,8 @@ const AddCommission = () => {
           <option value="Completed">Completed</option>
           <option value="Declined">Declined</option>
         </select>
+
+        <input type="file" onChange={handleImageChange} multiple />
         <button className="submit-button" type="submit">
           Add
         </button>
