@@ -23,7 +23,6 @@ const Sidebar = () => {
         <h1>Work in Progress</h1>
         <h1>Completed</h1>
         <h1>Not Accepted</h1>
-        <h1>Terminated</h1>
         <button onClick={() => navigate("/")}>Add Commission</button>
       </section>
       <Outlet />
