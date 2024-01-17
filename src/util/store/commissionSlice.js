@@ -16,6 +16,10 @@ const INITIAL_STATE = {
       refImage: [
         "https://t3.ftcdn.net/jpg/05/56/38/38/360_F_556383860_pVMr2MpKfOPa2tQZiysUatpqhWm6AXaB.jpg",
         "https://t4.ftcdn.net/jpg/05/69/84/67/360_F_569846700_i3o9u2fhPVVq7iJAzkqMqCwjWSyv53tT.jpg",
+        "https://static.displate.com/280x392/displate/2023-03-23/b8671ef5b9a5fdfedaf2bd72dfeaecd1_d23290dc9e5a5deede4abfdfb6e08f91.jpg",
+        "https://t4.ftcdn.net/jpg/05/69/84/67/360_F_569846700_i3o9u2fhPVVq7iJAzkqMqCwjWSyv53tT.jpg",
+        "https://t4.ftcdn.net/jpg/05/69/84/67/360_F_569846700_i3o9u2fhPVVq7iJAzkqMqCwjWSyv53tT.jpg",
+        "https://t4.ftcdn.net/jpg/05/69/84/67/360_F_569846700_i3o9u2fhPVVq7iJAzkqMqCwjWSyv53tT.jpg",
       ],
     },
     {
@@ -27,7 +31,10 @@ const INITIAL_STATE = {
       source: "",
       name: "Jess",
       id: "02",
-      refImage:[],
+      refImage: [
+        "https://t3.ftcdn.net/jpg/05/56/38/38/360_F_556383860_pVMr2MpKfOPa2tQZiysUatpqhWm6AXaB.jpg",
+        "https://t4.ftcdn.net/jpg/05/69/84/67/360_F_569846700_i3o9u2fhPVVq7iJAzkqMqCwjWSyv53tT.jpg",
+      ],
     },
     {
       price: "80",
@@ -38,7 +45,35 @@ const INITIAL_STATE = {
       source: "",
       name: "Cat",
       id: "03",
-      refImage:[],
+      refImage: [
+        "https://t3.ftcdn.net/jpg/05/56/38/38/360_F_556383860_pVMr2MpKfOPa2tQZiysUatpqhWm6AXaB.jpg",
+        "https://t4.ftcdn.net/jpg/05/69/84/67/360_F_569846700_i3o9u2fhPVVq7iJAzkqMqCwjWSyv53tT.jpg",
+        "https://static.displate.com/280x392/displate/2023-03-23/b8671ef5b9a5fdfedaf2bd72dfeaecd1_d23290dc9e5a5deede4abfdfb6e08f91.jpg",
+      ],
+    },
+    {
+      price: "180",
+      description:
+        "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
+      date: "2023-12-20",
+      status: "Accepted/WIP",
+      source: "",
+      name: "Tat",
+      id: "04",
+      refImage: [
+        "https://t3.ftcdn.net/jpg/05/56/38/38/360_F_556383860_pVMr2MpKfOPa2tQZiysUatpqhWm6AXaB.jpg",
+      ],
+    },
+    {
+      price: "1280",
+      description:
+        "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
+      date: "2023-12-20",
+      status: "Accepted/WIP",
+      source: "",
+      name: "Mat",
+      id: "05",
+      refImage: [],
     },
   ],
 };
@@ -61,8 +96,6 @@ export const comSlice = createSlice({
       const newList = HELPER_changeToComplete(state.comList, action.payload);
       state.comList = newList;
     },
-
-
   },
 });
 
@@ -76,7 +109,6 @@ const HELPER_changeToComplete = (currentList, idOfCommission) => {
     item.id === idOfCommission ? { ...item, status: "Completed" } : item
   );
 };
-
 
 export const {
   addCommissionToList,

@@ -44,9 +44,10 @@
     font-weight: 600;
 }
 .button-container {
+    margin-top: 2rem;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
+    justify-content: space-between;
     gap: 1rem;
 }
 .button-container > *{
@@ -57,7 +58,16 @@
 }
 
 .image-container {
-    height: 200px;
-    width: 100%;
-    display: flex;
+    height: 400px;
+
+    object-fit: cover;
+    padding: 0.2rem;
 }
+
+.ref-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+
+}
+

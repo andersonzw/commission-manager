@@ -6,6 +6,7 @@ import {
   selectComList,
 } from "../../util/store/commissionSlice";
 import { useNavigate, useParams } from "react-router-dom";
+import SimpleSlider from "../../components/slider/Slider";
 const Commissions = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const Commissions = () => {
   const commission = commissionList.filter((obj) => {
     return obj.id === userId;
   });
-  const { name, price, description, date, status, refImage } = commission[0];
+  const { name, price, description, date, status, source, refImage } = commission[0];
   console.log(commission);
 
   const handleRemove = () => {
@@ -37,16 +38,27 @@ const Commissions = () => {
       </div>
       <div className="secondary-header">
         <h2 className="requester-name">Requester: {name}</h2>
+        <h2>{source}</h2>
         <div className="price">${price}</div>
       </div>
       <div className="description">{description}</div>
-      <div className="image-container">
-        {refImage.map((image, i) => (
-          <img key={i} className="ref-image" src={image} alt="" />
-        ))}
-      </div>
-      <div className="button-container">
+
+      {refImage[0] && (
+        <div className="slider-container">
+          <h3>References</h3>
+          <SimpleSlider>
+            {refImage.map((image, i) => (
+              <div className="image-container">
+                <img key={i} className="ref-image" src={image} alt="" />
+              </div>
+            ))}
+          </SimpleSlider>
+        </div>
+      )}
+        <div className="button-container">
         <button onClick={handleRemove}>Remove</button>
+        <button>Edit</button>
+
         {status !== "Completed" && (
           <button onClick={handleCompleted}>Completed</button>
         )}

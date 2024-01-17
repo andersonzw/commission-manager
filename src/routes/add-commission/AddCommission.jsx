@@ -2,7 +2,10 @@ import { useDispatch } from "react-redux";
 import "./AddCommission.css";
 import { addCommissionToList } from "../../util/store/commissionSlice";
 import { useState } from "react";
-
+import PixivIcon from "../../assets/pixiv.svg";
+import SkebIcon from "../../assets/skeb.svg";
+import MailIcon from "../../assets/mail.svg";
+import Radio from "../../components/radio/Radio";
 // Add Commission Page
 const AddCommission = () => {
   const date = new Date();
@@ -28,7 +31,7 @@ const AddCommission = () => {
     name: "Meow",
   };
   const [formValues, setFormValues] = useState(INIT_FORM);
-  const [selectedImages, setSelectedImages] = useState([])
+  const [selectedImages, setSelectedImages] = useState([]);
   const handleSubmit = (e) => {
     const generateUniqueID = () => {
       // Get the current time in milliseconds
@@ -47,7 +50,7 @@ const AddCommission = () => {
     const description = select.description.value;
     const date = select.date.value;
     const status = select.status.value;
-    const source = select.source.value;
+    const source = select.radio.value;
     const name = select.name.value;
 
     const commissionObject = {
@@ -58,7 +61,7 @@ const AddCommission = () => {
       source: source,
       name: name,
       id: generateUniqueID(),
-      refImage: selectedImages
+      refImage: selectedImages,
     };
     // add commission to commission store
     dispatch(addCommissionToList(commissionObject));
@@ -84,20 +87,19 @@ const AddCommission = () => {
     // convert FileList object to an array of URLS
     const imageArray = Array.from(files).map((file) => {
       const reader = new FileReader();
-      return new Promise((resolve)=>{
+      return new Promise((resolve) => {
         reader.onloadend = () => {
           resolve(reader.result);
-        }
-        reader.readAsDataURL(file)
-      })
+        };
+        reader.readAsDataURL(file);
+      });
     });
 
     // Set the selected images once all urls are resolved
-    Promise.all(imageArray).then((urls)=>{
-      setSelectedImages(urls)
-    })
-    console.log({selectedImages});
-
+    Promise.all(imageArray).then((urls) => {
+      setSelectedImages(urls);
+    });
+    console.log({ selectedImages });
   };
 
   return (
@@ -163,17 +165,6 @@ const AddCommission = () => {
           }}
         />
 
-        <label htmlFor="source">Source</label>
-        <input
-          type="text"
-          name="source"
-          id="source"
-          value={formValues.source}
-          onChange={(e) => {
-            setFormValues({ ...formValues, source: e.target.value });
-          }}
-        />
-
         <label htmlFor="status">Completion Status</label>
         <select
           name="status"
@@ -188,6 +179,30 @@ const AddCommission = () => {
           <option value="Declined">Declined</option>
         </select>
 
+        <div className="sources-input-container">
+          <p className="sources-label">Sources</p>
+          <div className="source-container">
+            <Radio
+              name="radio"
+              value="pixiv"
+              labelText=""
+              labelIcon={PixivIcon}
+            />
+            <Radio
+              name="radio"
+              value="skeb"
+              labelText=""
+              labelIcon={SkebIcon}
+            />
+            <Radio
+              name="radio"
+              value="mail"
+              labelText=""
+              labelIcon={MailIcon}
+            />
+            <Radio name="radio" value="other" labelText="Other" />
+          </div>
+        </div>
         <input type="file" onChange={handleImageChange} multiple />
         <button className="submit-button" type="submit">
           Add
