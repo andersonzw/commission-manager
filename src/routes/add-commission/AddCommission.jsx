@@ -68,12 +68,11 @@ const AddCommission = () => {
     // clear form
     setFormValues(INIT_FORM);
 
-    console.log({ commissionObject });
   };
 
   const handleTextAreaInput = (e) => {
     setCharCount(MAXCHARACTERS - e.currentTarget.value.length);
-    console.log(charCount);
+
   };
 
   const handleDemoClick = () => {
@@ -82,7 +81,7 @@ const AddCommission = () => {
 
   const handleImageChange = (e) => {
     const files = e.target.files;
-    console.log(files);
+
 
     // convert FileList object to an array of URLS
     const imageArray = Array.from(files).map((file) => {
@@ -99,7 +98,7 @@ const AddCommission = () => {
     Promise.all(imageArray).then((urls) => {
       setSelectedImages(urls);
     });
-    console.log({ selectedImages });
+
   };
 
   return (

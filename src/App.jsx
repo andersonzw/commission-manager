@@ -2,8 +2,10 @@ import "./App.css";
 import AddCommission from "./routes/add-commission/AddCommission";
 import Sidebar from "./routes/sidebar/Sidebar";
 import { Routes, Route } from "react-router-dom";
-import About from "./routes/about/About"
+import About from "./routes/about/About";
 import Commissions from "./routes/commission-page/Commission";
+import { ConfirmProvider } from "./util/context/confirm.context";
+import ConfirmContextLayout from "./util/context/ConfirmContextLayout";
 
 function App() {
   return (
@@ -11,9 +13,10 @@ function App() {
       <Routes>
         <Route path="/" element={<Sidebar />}>
           <Route index element={<AddCommission />} />
-          <Route path = "about" element={<About/>}/>
-          <Route path = "/commission/:userId" element={<Commissions/>}/>
-
+          <Route path="about" element={<About />} />
+          <Route element={<ConfirmContextLayout/>}>
+            <Route path="/commission/:userId" element={<Commissions />} />
+          </Route>
         </Route>
       </Routes>
     </div>

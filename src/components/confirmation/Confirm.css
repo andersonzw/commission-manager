@@ -1,0 +1,39 @@
+.confirm-container {
+  background: rgb(255, 255, 255);
+  height: 187px;
+  width: 300px;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 1rem 1.5rem;
+}
+.confirm-container > .header {
+    display: flex;
+    justify-content: space-between;
+}
+.confirm-container > .header:nth-child(1) {
+  font-size: 1.2rem;
+}
+
+.confirm-container > .text{
+    color: var(--secondary-black);
+}
+.confirm-container > .footer {
+    display: flex;
+    margin-left: auto;
+    gap: 1rem;
+}
+.confirm-overlay {
+  background: rgba(0, 0, 0, 0.24);
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+}

@@ -4,4 +4,6 @@
   gap: 1rem;
   box-sizing: border-box;
   min-height: 100vh;
+  position: relative;
+  padding: 0
 }
