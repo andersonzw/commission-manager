@@ -1,0 +1,42 @@
+
+.input-container{
+    gap: 0.3rem;
+    margin: 0;
+}
+
+.input-container > input {
+width: 80%;
+
+}
+
+.sign-in-page.button {
+    background-color: var(--primary);
+}
+
+.sign-in-page.button:hover{
+    background-color: var(--primary-hover);
+}
+
+.create-an-account {
+    margin: 1.5rem 0 0 0;
+    position: relative;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+    color: var(--light-black-text);
+    font-size: 0.9rem;
+}
+
+.create-an-account::before {
+    content: '';
+    position: absolute;
+    height: 1px;
+    width: 80%;
+    top: -10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.096);
+    left: 50%;
+    transform: translate(-50%,0);
+
+
+
+}

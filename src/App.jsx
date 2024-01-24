@@ -7,16 +7,19 @@ import Commissions from "./routes/commission-page/Commission";
 import { ConfirmProvider } from "./util/context/confirm.context";
 import ConfirmContextLayout from "./util/context/ConfirmContextLayout";
 import Directory from "./routes/directory/Directory";
+import SignIn from "./routes/directory/sign-in/SignIn";
 
 function App() {
   return (
     <div className="paddings App">
       <Routes>
-        <Route path="/en" element={<Directory/>}/>
+        <Route path="/en" element={<Directory />} />
+        <Route path="/en/sign-in" element={<SignIn />} />
+
         <Route path="/" element={<Sidebar />}>
           <Route index element={<AddCommission />} />
           <Route path="about" element={<About />} />
-          <Route element={<ConfirmContextLayout/>}>
+          <Route element={<ConfirmContextLayout />}>
             <Route path="/commission/:userId" element={<Commissions />} />
           </Route>
         </Route>

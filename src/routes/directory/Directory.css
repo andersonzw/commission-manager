@@ -5,24 +5,33 @@
     top: 50%;left: 50%;
     transform: translate(-50%,-70%);
     background: white;
-    height: 400px;
     width: 350px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center
+    align-items: center;
+    padding: 5rem 1rem 2.1rem 1rem ;
 
 
 }
 .logo {
     width: 60%;
     height: 100px;
+    margin-bottom: 2rem;
+
 }
 .logo > img {
+    border-radius: 20px;
     width: 100%;
     height: 100%;
     object-fit: cover;
+}
+.google-logo {
+    background-color: rgb(243, 243, 243);
+    padding: 9px;
+    border-radius: 100%;
+    cursor: pointer;
 }
 .google-logo > img {
     height: 25px;
@@ -38,15 +47,22 @@
     font-size: 14px;
     border-radius: 20px;
     padding: 0.5rem 0.7rem;
+    transition: 0.2s;
+    cursor: pointer;
 }
 
 .button.sign-in {
-    background-color: rgb(231, 231, 231);
+    background-color: var(--background-grey);
     color: rgb(75, 75, 75);
 }
 
-.directory-container :nth-child(3) {
-
+.button.sign-in:hover{
+    background-color: rgba(44, 44, 44, 0.158);
+}
+.button.sign-up:hover{
+    background-color: var(--primary-hover);
+}
+.directory-container >p  {
     font-size: 0.7rem;
     color:rgb(75, 75, 75) ;
     

@@ -1,8 +1,13 @@
 :root {
   box-sizing: border-box;
   --secondary-black: #727272;
-  
+  --background-grey: rgb(243, 243, 243);
+  --primary: rgb(117, 223, 198);
+  --primary-hover: rgb(49, 204, 168);
+  --light-black-text: rgb(99, 99, 99);
 }
+  
+
 
 * {
   box-sizing: border-box;
@@ -39,7 +44,7 @@ a {
 }
 
 button {
-  background: rgb(117, 223, 198);
+  background: var(--primary);
   border: none;
   border-radius: 10px;
   font-size: 0.9rem;
@@ -94,4 +99,15 @@ button {
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
+}
+
+input {
+  background: var(--background-grey);
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+}
+
+input:focus {
+  outline: 1px solid var(--primary);
 }
