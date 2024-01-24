@@ -44,8 +44,11 @@ const Commissions = () => {
       </div>
       <div className="secondary-header">
         <h2 className="requester-name">Requester: {name}</h2>
-        <h2>{source}</h2>
-        <div className="price">${price}</div>
+        <span className="right">
+  
+          <p className="price">${price}</p>
+          <p className="source">{source}</p>
+        </span>
       </div>
       <div className="description">{description}</div>
 

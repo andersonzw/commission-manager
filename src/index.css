@@ -11,8 +11,6 @@ body {
   background-color: rgb(243, 243, 243);
   margin: 0;
   font-family: "Nunito", sans-serif;
-  box-sizing: border-box;
-  padding-top: 1.2rem;
 }
 
 a {
@@ -38,4 +36,62 @@ a {
   flex: 1;
   border-radius: 10px;
   padding: 2rem 4rem;
+}
+
+button {
+  background: rgb(117, 223, 198);
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  padding: 0.3rem 1rem;
+  color: white;
+  font-weight: 600;
+
+}
+
+
+.paddings {
+  padding: 1.5rem;
+}
+
+.innerWidth {
+  width: 100%;
+}
+
+.flexCenter {
+  display: flex;
+  row-gap: 2rem;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.flexStart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.flexEnd {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.flexColCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.flexColStart {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+}
+.flexColEnd {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
 }

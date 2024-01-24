@@ -71,3 +71,19 @@
 
 }
 
+.secondary-header > .right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.secondary-header > .right > .source{
+    text-transform: capitalize;
+    padding: 0.2rem 1rem;
+    font-size: 1rem;
+    background-color: rgb(90, 173, 236);
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+}
