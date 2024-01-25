@@ -7,7 +7,7 @@ const Sidebar = () => {
   const commissionList = useSelector(selectComList);
   const navigate = useNavigate();
   return (
-    <>
+    <div className="sidebar-outlet flexCenter">
       <section className="inner-paddings sidebar-section">
         <h1>Commission List</h1>
         <div>
@@ -28,7 +28,7 @@ const Sidebar = () => {
         <button onClick = {() => resetPersistedState()}> RESET STATE</button>
       </section>
       <Outlet />
-    </>
+    </div>
   );
 };
 

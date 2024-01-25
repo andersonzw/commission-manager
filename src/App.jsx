@@ -18,7 +18,7 @@ function App() {
         <Route path="/en" element={<Directory />} />
         <Route path="/en/sign-in" element={<SignIn />} />
         <Route path="/en/sign-up" element={<SignUp />} />
-
+        <Route path="/" element={<Header />}>
           <Route path="/" element={<Sidebar />}>
             <Route index element={<AddCommission />} />
             <Route path="about" element={<About />} />
@@ -26,7 +26,7 @@ function App() {
               <Route path="/commission/:userId" element={<Commissions />} />
             </Route>
           </Route>
-
+        </Route>
       </Routes>
     </div>
   );

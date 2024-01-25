@@ -1,7 +1,40 @@
 .header-section {
+  flex-grow: 1;
+  width: 100%;
+  max-width: calc(780px + 1rem + 254px);
+  display: flex;
+  justify-content: space-between;
+  padding: 0.1rem 0;
+  align-items: center;
+}
 
-    background: white;
-    width: 100%;
+.header-logo > img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 20px;
+}
+.header-logo {
+  height: 50px;
+  width: 70px;
+}
+.user-icon {
+  height: 50px;
+  width: 50px;
+  background: white;
+  border-radius: 100%;
+}
 
+.user-icon > img {
+  width: 100%;
+}
 
+.user-icon-container {
+  gap: 0.2rem;
+  cursor: pointer;
+}
+.down-arrow {
+  width: 1.3rem;
+  height: 1.3rem;
+  opacity: 0.6;
 }
