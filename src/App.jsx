@@ -8,6 +8,8 @@ import { ConfirmProvider } from "./util/context/confirm.context";
 import ConfirmContextLayout from "./util/context/ConfirmContextLayout";
 import Directory from "./routes/directory/Directory";
 import SignIn from "./routes/directory/sign-in/SignIn";
+import SignUp from "./routes/directory/sign-up/SignUp";
+import Header from "./routes/header/Header";
 
 function App() {
   return (
@@ -15,14 +17,16 @@ function App() {
       <Routes>
         <Route path="/en" element={<Directory />} />
         <Route path="/en/sign-in" element={<SignIn />} />
+        <Route path="/en/sign-up" element={<SignUp />} />
 
-        <Route path="/" element={<Sidebar />}>
-          <Route index element={<AddCommission />} />
-          <Route path="about" element={<About />} />
-          <Route element={<ConfirmContextLayout />}>
-            <Route path="/commission/:userId" element={<Commissions />} />
+          <Route path="/" element={<Sidebar />}>
+            <Route index element={<AddCommission />} />
+            <Route path="about" element={<About />} />
+            <Route element={<ConfirmContextLayout />}>
+              <Route path="/commission/:userId" element={<Commissions />} />
+            </Route>
           </Route>
-        </Route>
+
       </Routes>
     </div>
   );
