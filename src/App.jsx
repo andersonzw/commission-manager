@@ -11,7 +11,7 @@ import SignIn from "./routes/directory/sign-in/SignIn";
 import SignUp from "./routes/directory/sign-up/SignUp";
 import Header from "./routes/header/Header";
 import { useDispatch, useSelector } from "react-redux";
-import { selectCurrentUser, signInUser } from "./util/store/userSlice";
+import { selectCurrentUser, setCurrentUser } from "./util/store/userSlice";
 import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./util/firebase/firebase.utils";
@@ -23,9 +23,9 @@ function App() {
     const listen = onAuthStateChanged(auth, (user) => {
       // if user exists
       if (user) {
-        dispatch(signInUser(user));
+        dispatch(setCurrentUser(user));
       } else {
-        dispatch(signInUser(null));
+        dispatch(setCurrentUser(null));
       }
     });
     return listen;

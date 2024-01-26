@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "../Directory.css";
 import { Link, useNavigate } from "react-router-dom";
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../util/firebase/firebase.utils";
+import { signUpUser } from "../../../util/firebase/firebase.utils";
 const SignUp = () => {
   const nav = useNavigate();
   const [formData, setFormData] = useState({
@@ -11,18 +10,18 @@ const SignUp = () => {
     confirmPassword: "",
   });
 
-  const handleSignUp = (e) => {
+  const handleSignUp = async (e) => {
     e.preventDefault();
-    console.log(formData);
-    if (formData.confirmPassword === formData.password) {
-      createUserWithEmailAndPassword(auth, formData.email, formData.password)
-        .then((userCredential) => {
-          console.log(userCredential);
-      
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    if (formData.password === formData.confirmPassword) {
+      try {
+        const userCredential = await signUpUser(formData.email, formData.password);
+        console.log(userCredential);
+        nav("/");
+      } catch (error) {
+        console.log(error.message);
+      }
+    } else {
+      return;
     }
   };
   return (

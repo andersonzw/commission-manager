@@ -1,15 +1,23 @@
 import React from "react";
 import "./Header.css";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { signOutUser } from "../../util/firebase/firebase.utils";
 const Header = () => {
+  const nav = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
-  const handleSignOut = () =>{
-    signOutUser()
-  }
+
+  const handleSignOut = async () => {
+    try {
+      await signOutUser();
+      console.log("signed out");
+      nav("/en");
+    } catch (error) {
+      console.log("Error signing out:", error.message);
+    }
+  };
   return (
     <>
       <div className="header-section">

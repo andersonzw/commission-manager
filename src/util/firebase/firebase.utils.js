@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { getAuth, signOut } from "firebase/auth";
+import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -14,7 +14,7 @@ const firebaseConfig = {
   storageBucket: "commission-manager-901ae.appspot.com",
   messagingSenderId: "66387001598",
   appId: "1:66387001598:web:fdc655256242666d1ae5af",
-  measurementId: "G-P4PVSJ6ZB8"
+  measurementId: "G-P4PVSJ6ZB8",
 };
 
 // Initialize Firebase
@@ -24,10 +24,12 @@ const analytics = getAnalytics(app);
 // Initialize Firebase Authentication and get a reference to the service
 export const auth = getAuth(app);
 
-
-
 // Functions
+//Sign up user
+export const signUpUser = (email, password) => createUserWithEmailAndPassword(auth, email, password)
+//Sign in user
+export const signInUser = (email, password) => signInWithEmailAndPassword(auth, email, password)
+
 
 // Sign Out User
-
-export const signOutUser = async () => await signOut(auth);
+export const signOutUser = () => signOut(auth);

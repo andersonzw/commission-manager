@@ -2,23 +2,28 @@ import React, { useState } from "react";
 import "../Directory.css";
 import "./SignIn.css";
 import { Link, useNavigate } from "react-router-dom";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../../util/firebase/firebase.utils";
+
+import {signInUser } from "../../../util/firebase/firebase.utils";
 const SignIn = () => {
   const nav = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const handleSubmit = (e) => {
+
+//  handle sign in
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //todo: sign in
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log(userCredential);
+    try {
+      const userCredential = await signInUser(email, password)
+      console.log(userCredential);
         nav('/')
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    } catch (error) {
+      console.log(error.message);
+      setEmail('')
+      setPassword('')
+  
+    }
+
+
   };
 
   return (
