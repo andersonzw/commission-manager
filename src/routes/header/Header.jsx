@@ -1,7 +1,15 @@
 import React from "react";
 import "./Header.css";
 import { Outlet } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "../../util/store/userSlice";
+import { signOutUser } from "../../util/firebase/firebase.utils";
 const Header = () => {
+  const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+  const handleSignOut = () =>{
+    signOutUser()
+  }
   return (
     <>
       <div className="header-section">
@@ -9,11 +17,12 @@ const Header = () => {
           <img src="/src/assets/fktnm.jpg" alt="logo" />
         </div>
         <div className="flexCenter user-icon-container">
-          <div className="user-icon">
-            
+          {currentUser ? currentUser.email : "guest"}
+          <button onClick={() => handleSignOut()}>sign out</button>
+          {/* <div className="user-icon">
             <img src="/src/assets/user-icon.svg" alt="user icon" />
           </div>
-          <img className="down-arrow" src="/src/assets/arrow-down.svg" alt="" />
+          <img className="down-arrow" src="/src/assets/arrow-down.svg" alt="" /> */}
         </div>
       </div>
       <Outlet />

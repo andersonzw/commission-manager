@@ -1,39 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
 import "../Directory.css";
 import "./SignIn.css";
 import { Link, useNavigate } from "react-router-dom";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../util/firebase/firebase.utils";
 const SignIn = () => {
-  const nav = useNavigate()
+  const nav = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    //todo: sign in
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential);
+        nav('/')
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
-    <div className="directory-container sign-in-page-container">
-      <div className="logo">
-        <img src="/src/assets/fktnm.jpg" alt="" />
+    <section className="flexCenter auth-section">
+      <div className="directory-container sign-in-page-container">
+        <div className="logo">
+          <img src="/src/assets/fktnm.jpg" alt="" />
+        </div>
+        <form className="innerWidth" onSubmit={handleSubmit}>
+          <div className="flexColCenter innerWidth input-container">
+            <input
+              type="text"
+              name="email"
+              id="email"
+              placeholder="Email Address"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flexColCenter button-container">
+            <button className="sign-in-page button">Sign In</button>
+          </div>
+        </form>
+        <p>Sign in with Google</p>
+        <div className="flexCenter google-logo">
+          <img src="/src/assets/google.svg" alt="Google Logo" />
+        </div>
+        <Link to={"/en/sign-up"} className="create-an-account">
+          Create an account
+        </Link>
       </div>
-      <div className="flexColCenter innerWidth input-container">
-        <input
-          type="text"
-          name="email"
-          id="email"
-          placeholder="Email Address"
-        />
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="Password"
-        />
-      </div>
-      <div className="flexColCenter button-container">
-        <button onClick={() => nav("/")} className="sign-in-page button">
-          Sign In
-        </button>
-      </div>
-      <p>Sign in with Google</p>
-      <div className="flexCenter google-logo">
-        <img src="/src/assets/google.svg" alt="Google Logo" />
-      </div>
-      <Link to = {"/en/sign-up"} className="create-an-account">Create an account</Link>
-    </div>
+    </section>
   );
 };
 

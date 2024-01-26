@@ -7,7 +7,7 @@ const Sidebar = () => {
   const commissionList = useSelector(selectComList);
   const navigate = useNavigate();
   return (
-    <div className="sidebar-outlet flexCenter">
+    <div className="sidebar-outlet">
       <section className="inner-paddings sidebar-section">
         <h1>Commission List</h1>
         <div>

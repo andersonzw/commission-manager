@@ -1,9 +1,9 @@
-
+.auth-section {
+    min-height: 100vh;
+}
 
 .directory-container {
-    position: fixed;
-    top: 50%;left: 50%;
-    transform: translate(-50%,-70%);
+
     background: white;
     width: 350px;
     border-radius: 20px;
@@ -12,6 +12,7 @@
     justify-content: center;
     align-items: center;
     padding: 3.5rem 1rem 2.1rem 1rem ;
+    margin-top: -10%;
 
 
 }

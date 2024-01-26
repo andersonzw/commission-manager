@@ -10,10 +10,28 @@ import Directory from "./routes/directory/Directory";
 import SignIn from "./routes/directory/sign-in/SignIn";
 import SignUp from "./routes/directory/sign-up/SignUp";
 import Header from "./routes/header/Header";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser, signInUser } from "./util/store/userSlice";
+import { useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./util/firebase/firebase.utils";
 
 function App() {
+  const currentUser = useSelector(selectCurrentUser);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    const listen = onAuthStateChanged(auth, (user) => {
+      // if user exists
+      if (user) {
+        dispatch(signInUser(user));
+      } else {
+        dispatch(signInUser(null));
+      }
+    });
+    return listen;
+  }, []);
   return (
-    <div className="paddings App">
+    <div className=" App">
       <Routes>
         <Route path="/en" element={<Directory />} />
         <Route path="/en/sign-in" element={<SignIn />} />
