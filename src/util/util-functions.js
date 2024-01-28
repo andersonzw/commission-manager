@@ -9,3 +9,15 @@ export const getDate = (future) => {
     return `${year}-${month}-${day}`;
   };
   
+
+      
+  export const generateUniqueID = () => {
+    // Get the current time in milliseconds
+    const currentTime = new Date().getTime();
+
+    // Extract the last 6 digits from the current time
+    const last6Digits = currentTime.toString().slice(-6);
+
+    // Return the generated ID
+    return last6Digits;
+  };

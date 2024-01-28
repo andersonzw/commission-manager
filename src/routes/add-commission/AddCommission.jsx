@@ -6,9 +6,11 @@ import PixivIcon from "../../assets/pixiv.svg";
 import SkebIcon from "../../assets/skeb.svg";
 import MailIcon from "../../assets/mail.svg";
 import Radio from "../../components/radio/Radio";
-import { getDate } from "../../util/util-functions";
+import { generateUniqueID, getDate } from "../../util/util-functions";
+import { useNavigate } from "react-router-dom";
 // Add Commission Page
 const AddCommission = () => {
+  const nav = useNavigate()
   const date = new Date();
   const defaultDate = date.toLocaleDateString("en-CA");
   const MAXCHARACTERS = 3000;
@@ -35,24 +37,17 @@ const AddCommission = () => {
   const [formValues, setFormValues] = useState(INIT_FORM);
   const [selectedImages, setSelectedImages] = useState([]);
   const handleSubmit = (e) => {
-    const generateUniqueID = () => {
-      // Get the current time in milliseconds
-      const currentTime = new Date().getTime();
 
-      // Extract the last 6 digits from the current time
-      const last6Digits = currentTime.toString().slice(-6);
 
-      // Return the generated ID
-      return last6Digits;
-    };
 
+    const id = generateUniqueID()
     e.preventDefault();
     const select = e.currentTarget;
     const price = select.price.value;
     const description = select.description.value;
     const date = select.date.value;
     const status = select.status.value;
-    const source = select.radio.value;
+    const source = select["source-group"].value;
     const name = select.name.value;
 
     const commissionObject = {
@@ -62,14 +57,17 @@ const AddCommission = () => {
       status: status,
       source: source,
       name: name,
-      id: generateUniqueID(),
+      id: id,
       refImage: selectedImages,
       added: getDate(0),
     };
+    console.log(commissionObject);
     // add commission to commission store
     dispatch(addCommissionToList(commissionObject));
     // clear form
     setFormValues(INIT_FORM);
+    //redirect
+    nav(`/commission/${id}`)
   };
 
   const handleTextAreaInput = (e) => {
