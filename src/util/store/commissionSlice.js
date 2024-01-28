@@ -27,11 +27,26 @@ const INITIAL_STATE = {
     },
     {
       price: "200",
-      description:
-        "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-        date: getDate(6),
-        added: getDate(-1),
-      status: "Declined",
+      description: `先生はじめまして！
+        先生のイラストが大好きでSkebの再開を心待ちにしておりました。
+        応援しているVtuberの姫乃あいむさん(@himenoaimu)にイラストを贈りたくリクエストさせて頂きました。
+        
+        ◯人物、容姿、服装
+        歌うことが大好きなロイヤルローズ王国のお姫様で、容姿服装につきましては下記三面図の通りになります。
+        
+        ◯使用用途
+        ・活動者様ご自身のSNS、PixivFANBOX等の支援サイトでのイラストの投稿
+        ・YouTubeチャンネルでの配信・サムネイル等でのイラストの使用
+        ・個人での使用・鑑賞
+        
+        ◯イメージ・構図等
+        ・構図・表情・シチュエーションはお任せ致します。
+        
+        納品形式は人物と背景が透過されたレイヤーを分けたPSDかPNGファイルで納品していただけますと幸いです。
+        ご縁がありましたらよろしくお願い致します。`,
+      date: getDate(6),
+      added: getDate(-1),
+      status: "Accepted/WIP",
       source: "skeb",
       name: "Jess",
       id: "02",
@@ -44,9 +59,10 @@ const INITIAL_STATE = {
       price: "80",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-        date: getDate(7),
-        added: getDate(0),
+      date: getDate(7),
+      added: getDate(0),
       source: "mail",
+      status: "Accepted/WIP",
       name: "Cat",
       id: "03",
       refImage: [
@@ -59,8 +75,8 @@ const INITIAL_STATE = {
       price: "180",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-        date: getDate(2),
-        added: getDate(0),
+      date: getDate(2),
+      added: getDate(0),
       status: "Accepted/WIP",
       source: "other",
       name: "Tat",
@@ -73,8 +89,8 @@ const INITIAL_STATE = {
       price: "1280",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-        date: getDate(1),
-        added: getDate(-2),
+      date: getDate(1),
+      added: getDate(-2),
       status: "Accepted/WIP",
       source: "skeb",
       name: "Mat",

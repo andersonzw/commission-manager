@@ -25,7 +25,7 @@
 .sidebar-com-card {
   display: flex;
   flex-direction: column;
-  box-shadow: 1px 1px 4px 1px var(--primary);
+  border: 1px solid rgba(70, 212, 158, 0.4);
   padding: 0.5rem;
   border-radius: 12px;
 }

@@ -28,8 +28,9 @@ const AddCommission = () => {
     description: "Some description",
     date: defaultDate,
     selected: "Completed",
-    source: "www.google.com",
+    source: "pixiv",
     name: "Meow",
+
   };
   const [formValues, setFormValues] = useState(INIT_FORM);
   const [selectedImages, setSelectedImages] = useState([]);
@@ -63,18 +64,16 @@ const AddCommission = () => {
       name: name,
       id: generateUniqueID(),
       refImage: selectedImages,
-      added: getDate(0)
+      added: getDate(0),
     };
     // add commission to commission store
     dispatch(addCommissionToList(commissionObject));
     // clear form
     setFormValues(INIT_FORM);
-
   };
 
   const handleTextAreaInput = (e) => {
     setCharCount(MAXCHARACTERS - e.currentTarget.value.length);
-
   };
 
   const handleDemoClick = () => {
@@ -83,7 +82,6 @@ const AddCommission = () => {
 
   const handleImageChange = (e) => {
     const files = e.target.files;
-
 
     // convert FileList object to an array of URLS
     const imageArray = Array.from(files).map((file) => {
@@ -100,7 +98,6 @@ const AddCommission = () => {
     Promise.all(imageArray).then((urls) => {
       setSelectedImages(urls);
     });
-
   };
 
   return (
@@ -160,6 +157,7 @@ const AddCommission = () => {
           type="number"
           name="price"
           id="price"
+          placeholder="$"
           value={formValues.price}
           onChange={(e) => {
             setFormValues({ ...formValues, price: e.target.value });
@@ -184,27 +182,27 @@ const AddCommission = () => {
           <p className="sources-label">Sources</p>
           <div className="source-container">
             <Radio
-              name="radio"
+              name="source-group"
               value="pixiv"
               labelText=""
               labelIcon={PixivIcon}
+              defaultChecked = {true}
             />
             <Radio
-              name="radio"
+              name="source-group"
               value="skeb"
               labelText=""
               labelIcon={SkebIcon}
             />
             <Radio
-              name="radio"
+              name="source-group"
               value="mail"
-              labelText=""
-              labelIcon={MailIcon}
+              labelText="Mail"
             />
-            <Radio name="radio" value="other" labelText="Other" />
+            <Radio name="source-group" value="other" labelText="Other" />
           </div>
         </div>
-        <input type="file" onChange={handleImageChange} multiple />
+        <input id="file" type="file" onChange={handleImageChange} multiple />
         <button className="submit-button" type="submit">
           Add
         </button>
