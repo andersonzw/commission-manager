@@ -1,14 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
-const currentDate = new Date();
-const futureDate = new Date(currentDate);
-futureDate.setMonth(currentDate.getMonth() + 1);
+import { getDate } from "../util-functions";
+
+// Extract year, month, and day
+
+// Format into yyyy-mm-dd
 const INITIAL_STATE = {
   comList: [
     {
       price: "100",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-      date: "2023-11-20",
+      date: getDate(4),
+      added: getDate(0),
       status: "Completed",
       source: "pixiv",
       name: "Bob",
@@ -26,7 +29,8 @@ const INITIAL_STATE = {
       price: "200",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-      date: "2023-11-20",
+        date: getDate(6),
+        added: getDate(-1),
       status: "Declined",
       source: "skeb",
       name: "Jess",
@@ -40,8 +44,8 @@ const INITIAL_STATE = {
       price: "80",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-      date: "2023-12-20",
-      status: "Accepted/WIP",
+        date: getDate(7),
+        added: getDate(0),
       source: "mail",
       name: "Cat",
       id: "03",
@@ -55,7 +59,8 @@ const INITIAL_STATE = {
       price: "180",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-      date: "2023-12-20",
+        date: getDate(2),
+        added: getDate(0),
       status: "Accepted/WIP",
       source: "other",
       name: "Tat",
@@ -68,7 +73,8 @@ const INITIAL_STATE = {
       price: "1280",
       description:
         "Suzuran, an ethereally captivating arcanist from the mystical enclave of Eclipsia stands at 5'7 with midnight-blue hair, violet eyes, and an aura of tranquil elegance. Clad in an intricately designed navy-blue qipao, complemented by an azure cloak and a silver pendant, she wields the slim crystal staff Moonlit Serenity and carries a pouch of magical charms.",
-      date: "2023-12-20",
+        date: getDate(1),
+        added: getDate(-2),
       status: "Accepted/WIP",
       source: "skeb",
       name: "Mat",

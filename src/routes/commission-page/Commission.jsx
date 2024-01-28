@@ -20,7 +20,7 @@ const Commissions = () => {
   const commission = commissionList.filter((obj) => {
     return obj.id === userId;
   });
-  const { name, price, description, date, status, source, refImage } =
+  const { name, price, description, date, status, source, refImage, added } =
     commission[0];
 
   const handleRemove = () => {
@@ -37,7 +37,7 @@ const Commissions = () => {
     <section className=" commission-section">
       <div className="header">
         <h1>Request: {userId}</h1>
-        <h1>{date}</h1>
+        <h1>Due: {date}</h1>
         <div className={`status ${status}`}>
           <h3>{status}</h3>
         </div>
@@ -45,13 +45,11 @@ const Commissions = () => {
       <div className="secondary-header">
         <h2 className="requester-name">Requester: {name}</h2>
         <span className="right">
-  
           <p className="price">${price}</p>
           <p className="source">{source}</p>
         </span>
       </div>
       <div className="description">{description}</div>
-
       {refImage[0] && (
         <div className="slider-container">
           <h3>References</h3>
@@ -63,7 +61,8 @@ const Commissions = () => {
             ))}
           </SimpleSlider>
         </div>
-      )}
+      )}{" "}
+      <p>Added: {added}</p>
       <div className="button-container">
         <button onClick={() => displayConfirmDialogue()}>Remove</button>
         <button>Edit</button>

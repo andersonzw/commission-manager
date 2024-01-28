@@ -6,6 +6,7 @@ import PixivIcon from "../../assets/pixiv.svg";
 import SkebIcon from "../../assets/skeb.svg";
 import MailIcon from "../../assets/mail.svg";
 import Radio from "../../components/radio/Radio";
+import { getDate } from "../../util/util-functions";
 // Add Commission Page
 const AddCommission = () => {
   const date = new Date();
@@ -62,6 +63,7 @@ const AddCommission = () => {
       name: name,
       id: generateUniqueID(),
       refImage: selectedImages,
+      added: getDate(0)
     };
     // add commission to commission store
     dispatch(addCommissionToList(commissionObject));
