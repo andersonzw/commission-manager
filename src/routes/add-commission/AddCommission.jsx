@@ -1,4 +1,4 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./AddCommission.css";
 import { addCommissionToList } from "../../util/store/commissionSlice";
 import { useState } from "react";
@@ -8,8 +8,12 @@ import MailIcon from "../../assets/mail.svg";
 import Radio from "../../components/radio/Radio";
 import { generateUniqueID, getDate } from "../../util/util-functions";
 import { useNavigate } from "react-router-dom";
+import { selectCurrentUser } from "../../util/store/userSlice";
+import { uploadComObject } from "../../util/firebase/firebase.utils";
 // Add Commission Page
 const AddCommission = () => {
+  const user = useSelector(selectCurrentUser)
+  const userId = user? user.uid : null;
   const nav = useNavigate()
   const date = new Date();
   const defaultDate = date.toLocaleDateString("en-CA");
@@ -36,7 +40,22 @@ const AddCommission = () => {
   };
   const [formValues, setFormValues] = useState(INIT_FORM);
   const [selectedImages, setSelectedImages] = useState([]);
+
+  const uploadCommission = async (object) => {
+    if (!userId) return 
+    try {
+      await uploadComObject(`users/${userId}/commissionList`, object)
+      console.log("Added");
+    } catch (error) {
+      console.log(error.message);
+      
+    }
+
+  }
+
+
   const handleSubmit = (e) => {
+    console.log(user.uid);
 
 
 
@@ -62,12 +81,16 @@ const AddCommission = () => {
       added: getDate(0),
     };
     console.log(commissionObject);
-    // add commission to commission store
-    dispatch(addCommissionToList(commissionObject));
+    // todo: add object to firebase databse
+
+    // dispatch(addCommissionToList(commissionObject))
+
+    uploadCommission(commissionObject)
     // clear form
     setFormValues(INIT_FORM);
-    //redirect
-    nav(`/commission/${id}`)
+    
+    // //redirect
+    // nav(`/commission/${id}`)
   };
 
   const handleTextAreaInput = (e) => {

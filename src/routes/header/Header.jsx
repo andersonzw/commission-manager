@@ -21,9 +21,10 @@ const Header = () => {
   return (
     <>
       <div className="header-section">
+        
         <div className="header-logo">
           <img src="/src/assets/fktnm.jpg" alt="logo" />
-        </div>
+        </div> 
         <div className="flexCenter user-icon-container">
           {currentUser ? currentUser.email : "guest"}
           <button onClick={() => handleSignOut()}>sign out</button>
