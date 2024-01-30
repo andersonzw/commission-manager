@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { selectCurrentActiveTab } from "../../util/store/activeTabSlice";
 
 const SideBarComCard = ({ com, today }) => {
-    const nav = useNavigate()
+  const currentActiveTab = useSelector(selectCurrentActiveTab);
+  const nav = useNavigate();
+  const handleClick = () => {
+    nav(`/commission/${com.id}`);
+  };
   return (
     <div
-      onClick={() => {
-        nav(`/commission/${com.id}`);
+      onClick={(e) => {
+        handleClick(e);
       }}
-      className="sidebar-com-card"
+      className={`sidebar-com-card ${currentActiveTab === com.id ? "active" : ""}`}
     >
       <div>
         <span>Request ID: {com.id}</span> <span> ${com.price}</span>

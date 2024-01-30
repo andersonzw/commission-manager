@@ -3,12 +3,11 @@ import "./Sidebar.css";
 import { selectComList } from "../../util/store/commissionSlice";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 import resetPersistedState from "../../util/store/ResetPersistedState";
-import { useEffect } from "react";
 import SideBarComCard from "../../components/sidebar-com-card/SideBarComCard";
+import { selectCurrentActiveTab } from "../../util/store/activeTabSlice";
 
 const Sidebar = () => {
   const commissionList = useSelector(selectComList);
-
   // Sort commission list by due dates
   const sortedcommissionList = [...commissionList].sort((a, b) => {
     const dateA = new Date(a.date);
@@ -27,7 +26,7 @@ const Sidebar = () => {
             if (com.status !== "Accepted/WIP") {
               return;
             } else {
-              return <SideBarComCard com={com} today = {today} key = {i} />;
+              return <SideBarComCard com={com} today={today} key={i} />;
             }
           })}
         </div>
@@ -37,7 +36,7 @@ const Sidebar = () => {
             if (com.status === "Accepted/WIP") {
               return;
             } else {
-              return <SideBarComCard com={com} today = {today} key = {i} />;
+              return <SideBarComCard com={com} today={today} key={i} />;
             }
           })}
         </div>
