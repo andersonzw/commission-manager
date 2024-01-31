@@ -10,7 +10,21 @@
 .textarea-container {
   position: relative;
 }
+.name-div {
+  position: relative;
+  width: 200px;
+}
+#name {
+  width: 100%;
 
+}
+.name-char-count {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  opacity: 0.3;
+  font-size: smaller;
+}
 .char-count {
   position: absolute;
   right: 10px;
@@ -27,9 +41,6 @@
   justify-content: space-between;
 }
 
-#name {
-  width: 50%;
-}
 
 .demo-button {
   position: absolute;

@@ -1,24 +1,33 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./AddCommission.css";
-import { addCommissionToList, fetchCommissionList } from "../../util/store/commissionSlice";
+import {
+  addCommissionToList,
+  fetchCommissionList,
+} from "../../util/store/commissionSlice";
 import { useState } from "react";
 import PixivIcon from "../../assets/pixiv.svg";
 import SkebIcon from "../../assets/skeb.svg";
 import MailIcon from "../../assets/mail.svg";
 import Radio from "../../components/radio/Radio";
-import { fetchList, generateUniqueID, getDate } from "../../util/util-functions";
+import {
+  fetchList,
+  generateUniqueID,
+  getDate,
+} from "../../util/util-functions";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { uploadComObject } from "../../util/firebase/firebase.utils";
 // Add Commission Page
 const AddCommission = () => {
-  const user = useSelector(selectCurrentUser)
-  const userId = user? user.uid : null;
-  const nav = useNavigate()
+  const user = useSelector(selectCurrentUser);
+  const userId = user ? user.uid : null;
+  const nav = useNavigate();
   const date = new Date();
   const defaultDate = date.toLocaleDateString("en-CA");
   const MAXCHARACTERS = 3000;
+  const MAXCHARACTERS_NAME = 16;
   const [charCount, setCharCount] = useState(MAXCHARACTERS);
+  const [nameCharCount, setNameCharCount] = useState(MAXCHARACTERS_NAME);
   const dispatch = useDispatch();
   const INIT_FORM = {
     price: "",
@@ -36,31 +45,26 @@ const AddCommission = () => {
     selected: "Completed",
     source: "pixiv",
     name: "Meow",
-
   };
   const [formValues, setFormValues] = useState(INIT_FORM);
   const [selectedImages, setSelectedImages] = useState([]);
 
   const uploadCommission = async (object) => {
-    if (!userId) return 
+    if (!userId) return;
     try {
-      await uploadComObject(`users/${userId}/commissionList`, object)
+      await uploadComObject(`users/${userId}/commissionList`, object);
       console.log("Added");
       console.log("fetching...");
-       const comList = await fetchList(userId)
-       dispatch(fetchCommissionList(comList))
-
+      const comList = await fetchList(userId);
+      dispatch(fetchCommissionList(comList));
     } catch (error) {
       console.log(error.message);
-      
     }
-
-  }
-
+  };
 
   const handleSubmit = async (e) => {
     console.log(user.uid);
-    const id = generateUniqueID()
+    const id = generateUniqueID();
     e.preventDefault();
     const select = e.currentTarget;
     const price = select.price.value;
@@ -86,14 +90,16 @@ const AddCommission = () => {
 
     // dispatch(addCommissionToList(commissionObject))
 
-    await uploadCommission(commissionObject)
+    await uploadCommission(commissionObject);
     // clear form
     setFormValues(INIT_FORM);
-    
+
     // //redirect
     // nav(`/commission/${id}`)
   };
-
+  const handleNameInput = (e) => {
+    setNameCharCount(MAXCHARACTERS_NAME - e.currentTarget.value.length)
+  }
   const handleTextAreaInput = (e) => {
     setCharCount(MAXCHARACTERS - e.currentTarget.value.length);
   };
@@ -130,16 +136,24 @@ const AddCommission = () => {
       <h1>Add Commission</h1>
       <form className="add-commission-form" onSubmit={handleSubmit}>
         <label htmlFor="name">Requester Name</label>
-        <input
-          required
-          type="text"
-          name="name"
-          id="name"
-          value={formValues.name}
-          onChange={(e) => {
-            setFormValues({ ...formValues, name: e.target.value });
-          }}
-        />
+        <div className="name-div">
+          <input
+            required
+            maxLength={MAXCHARACTERS_NAME}
+            type="text"
+            name="name"
+            id="name"
+            value={formValues.name}
+            onChange={(e) => {
+              setFormValues({ ...formValues, name: e.target.value });
+              handleNameInput(e)
+              console.log(nameCharCount);
+            }}
+          />
+          <span className="name-char-count">
+            {nameCharCount}/{MAXCHARACTERS_NAME}
+          </span>
+        </div>
 
         <label htmlFor="description">Commission Content</label>
         <div className="textarea-container">
@@ -208,7 +222,7 @@ const AddCommission = () => {
               value="pixiv"
               labelText=""
               labelIcon={PixivIcon}
-              defaultChecked = {true}
+              defaultChecked={true}
             />
             <Radio
               name="source-group"
@@ -216,11 +230,7 @@ const AddCommission = () => {
               labelText=""
               labelIcon={SkebIcon}
             />
-            <Radio
-              name="source-group"
-              value="mail"
-              labelText="Mail"
-            />
+            <Radio name="source-group" value="mail" labelText="Mail" />
             <Radio name="source-group" value="other" labelText="Other" />
           </div>
         </div>

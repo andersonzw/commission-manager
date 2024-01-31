@@ -59,8 +59,8 @@ const Sidebar = () => {
           })}
         </div>
         <button onClick={() => nav("/")}>Add Commission</button>
-        <button onClick={() => resetPersistedState()}> RESET STATE</button>
-        <button onClick={() => handleFetch()}>Fetch</button>
+        {/* <button onClick={() => resetPersistedState()}> RESET STATE</button>
+        <button onClick={() => handleFetch()}>Fetch</button> */}
       </section>
       <Outlet />
     </div>
