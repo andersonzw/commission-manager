@@ -18,7 +18,6 @@ const SignIn = () => {
 
   //  handle sign in
   const handleSubmit = async (e) => {
-    resetPersistedState();
     e.preventDefault();
     try {
       const userCredential = await signInUser(email, password);

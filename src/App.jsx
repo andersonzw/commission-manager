@@ -49,7 +49,7 @@ function App() {
             <Route index element={<AddCommission />} />
             <Route path="about" element={<About />} />
             <Route element={<ConfirmContextLayout />}>
-              <Route path="/commission/:userId" element={<Commissions />} />
+              <Route path="/commission/:comId" element={<Commissions />} />
             </Route>
           </Route>
         </Route>
