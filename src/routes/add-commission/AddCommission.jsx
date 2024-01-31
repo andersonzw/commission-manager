@@ -1,12 +1,12 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./AddCommission.css";
-import { addCommissionToList } from "../../util/store/commissionSlice";
+import { addCommissionToList, fetchCommissionList } from "../../util/store/commissionSlice";
 import { useState } from "react";
 import PixivIcon from "../../assets/pixiv.svg";
 import SkebIcon from "../../assets/skeb.svg";
 import MailIcon from "../../assets/mail.svg";
 import Radio from "../../components/radio/Radio";
-import { generateUniqueID, getDate } from "../../util/util-functions";
+import { fetchList, generateUniqueID, getDate } from "../../util/util-functions";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { uploadComObject } from "../../util/firebase/firebase.utils";
@@ -46,6 +46,10 @@ const AddCommission = () => {
     try {
       await uploadComObject(`users/${userId}/commissionList`, object)
       console.log("Added");
+      console.log("fetching...");
+       const comList = await fetchList(userId)
+       dispatch(fetchCommissionList(comList))
+
     } catch (error) {
       console.log(error.message);
       
@@ -54,11 +58,8 @@ const AddCommission = () => {
   }
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     console.log(user.uid);
-
-
-
     const id = generateUniqueID()
     e.preventDefault();
     const select = e.currentTarget;
@@ -85,7 +86,7 @@ const AddCommission = () => {
 
     // dispatch(addCommissionToList(commissionObject))
 
-    uploadCommission(commissionObject)
+    await uploadCommission(commissionObject)
     // clear form
     setFormValues(INIT_FORM);
     
