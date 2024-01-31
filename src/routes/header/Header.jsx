@@ -4,15 +4,19 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { signOutUser } from "../../util/firebase/firebase.utils";
+import resetPersistedState from "../../util/store/ResetPersistedState";
 const Header = () => {
   const nav = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
 
   const handleSignOut = async () => {
+    resetPersistedState()
+
     try {
       await signOutUser();
       console.log("signed out");
+
       nav("/en");
     } catch (error) {
       console.log("Error signing out:", error.message);

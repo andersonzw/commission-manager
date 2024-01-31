@@ -35,6 +35,7 @@ export const signInUser = (email, password) => signInWithEmailAndPassword(auth, 
 // Sign Out User
 export const signOutUser = () => signOut(auth);
 
-const db = getFirestore()
+export const dbQuery = (path) => query(collection(db, path));
+export const db = getFirestore()
 //Upload document
 export const uploadComObject = (path, object) => setDoc(doc(db, path, object.id), object)

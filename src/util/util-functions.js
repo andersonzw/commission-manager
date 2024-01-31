@@ -1,5 +1,8 @@
+import { collection, getDocs, query } from "firebase/firestore";
+import { db } from "./firebase/firebase.utils";
 
 export const getDate = (future) => {
+
     const currentDate = new Date();
     const futureDate = new Date(currentDate);
     futureDate.setMonth(currentDate.getMonth() + future);
@@ -20,4 +23,18 @@ export const getDate = (future) => {
 
     // Return the generated ID
     return last6Digits;
+  };
+
+  // fetch and dispatch commission list to store
+  export const fetchList = async (userId) => {
+    if (!userId) return;
+    const q = query(collection(db, `users/${userId}/commissionList`));
+    try {
+      const querySnapshot = await getDocs(q);
+      const comList = querySnapshot.docs.map((doc) => doc.data());
+      return comList;
+    } catch (e) {
+      console.error("Error fetching todo lists: ", e);
+      return [];
+    }
   };
