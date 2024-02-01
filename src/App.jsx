@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./util/firebase/firebase.utils";
 import { setCurrentActiveTab } from "./util/store/activeTabSlice";
+import EditCommission from "./routes/edit-commission/EditCommission";
 
 function App() {
   const location = useLocation();
@@ -42,14 +43,21 @@ function App() {
     <div className=" App">
       <Routes>
         <Route path="/en" element={<Directory />} />
+
         <Route path="/en/sign-in" element={<SignIn />} />
+
         <Route path="/en/sign-up" element={<SignUp />} />
+
         <Route path="/" element={<Header />}>
+          {/* outlet */}
           <Route path="/" element={<Sidebar />}>
+            {/* outlet */}
             <Route index element={<AddCommission />} />
             <Route path="about" element={<About />} />
             <Route element={<ConfirmContextLayout />}>
-              <Route path="/commission/:comId" element={<Commissions />} />
+              <Route path="/commission/:comId" element={<Commissions />}/>
+              <Route path="/commission/:comId/edit" element={<EditCommission />} />
+
             </Route>
           </Route>
         </Route>

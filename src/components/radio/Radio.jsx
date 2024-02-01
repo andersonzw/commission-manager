@@ -1,10 +1,25 @@
-
-const Radio = ({name, value, labelText, labelIcon, defaultChecked}) => {
+const Radio = ({
+  name,
+  value,
+  labelText,
+  labelIcon,
+  checked,
+  onChange,
+}) => {
   return (
     <div className="radio-container">
-      <input type="radio" name={name} id={value} value={value} defaultChecked={defaultChecked} />
+      <input
+        type="radio"
+        name={name}
+        id={value}
+        value={value}
+        checked={checked}
+        onChange={onChange}
+      />
       <label htmlFor={value}>
-        {labelIcon && <img className="icon" src={labelIcon} alt={`SVG icon for ${value}`} />}
+        {labelIcon && (
+          <img className="icon" src={labelIcon} alt={`SVG icon for ${value}`} />
+        )}
 
         <span>{labelText}</span>
       </label>

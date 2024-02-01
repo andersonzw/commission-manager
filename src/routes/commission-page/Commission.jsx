@@ -6,7 +6,7 @@ import {
   selectComList,
   fetchCommissionList,
 } from "../../util/store/commissionSlice";
-import { useNavigate, useParams } from "react-router-dom";
+import { Outlet, useNavigate, useParams } from "react-router-dom";
 import SimpleSlider from "../../components/slider/Slider";
 import Confirm from "../../components/confirmation/Confirm";
 import { useContext } from "react";
@@ -15,9 +15,9 @@ import { deleteComObject } from "../../util/firebase/firebase.utils";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { fetchList } from "../../util/util-functions";
 const Commissions = () => {
-  const user = useSelector(selectCurrentUser)
+  const user = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const nav = useNavigate();
   const { comId } = useParams();
   const { confirmToggle, hideConfirmDialogue, displayConfirmDialogue } =
     useContext(ConfirmContext);
@@ -28,23 +28,21 @@ const Commissions = () => {
   const { name, price, description, date, status, source, refImage, added } =
     commission[0];
 
-
-
-const deleteCommission = async () => {
-  try {
-    await deleteComObject(`users/${user.uid}/commissionList`, commission[0]);
-  } catch (error) {
-    console.log(error);
-  }
-};
+  const deleteCommission = async () => {
+    try {
+      await deleteComObject(`users/${user.uid}/commissionList`, commission[0]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const handleRemove = async () => {
     console.log(commission[0]);
     console.log("fired");
-    await deleteCommission()
-     navigate("/");
+    await deleteCommission();
+    nav("/");
     hideConfirmDialogue();
-    const comList = await fetchList(user.uid)
-    dispatch(fetchCommissionList(comList))
+    const comList = await fetchList(user.uid);
+    dispatch(fetchCommissionList(comList));
   };
 
   const handleCompleted = () => {
@@ -52,45 +50,46 @@ const deleteCommission = async () => {
   };
   return (
     // userId = Id
-    <section className=" commission-section">
-      <div className="header">
-        <h1>Request: {comId}</h1>
-        <h1>Due: {date}</h1>
-        <div className={`status ${status}`}>
-          <h3>{status}</h3>
+    <>
+      <section className=" commission-section">
+        <div className="header">
+          <h1>Request: {comId}</h1>
+          <h1>Due: {date}</h1>
+          <div className={`status ${status}`}>
+            <h3>{status}</h3>
+          </div>
         </div>
-      </div>
-      <div className="secondary-header">
-        <h2 className="requester-name">Requester: {name}</h2>
-        <span className="right">
-          <p className="price">${price}</p>
-          <p className="source">{source}</p>
-        </span>
-      </div>
-      <div className="description">{description}</div>
-      {refImage[0] && (
-        <div className="slider-container">
-          <h3>References</h3>
-          <SimpleSlider>
-            {refImage.map((image, i) => (
-              <div key={i} className="image-container">
-                <img className="ref-image" src={image} alt="" />
-              </div>
-            ))}
-          </SimpleSlider>
+        <div className="secondary-header">
+          <h2 className="requester-name">Requester: {name}</h2>
+          <span className="right">
+            <p className="price">${price}</p>
+            <p className="source">{source}</p>
+          </span>
         </div>
-      )}{" "}
-      <p>Added: {added}</p>
-      <div className="button-container">
-        <button onClick={() => displayConfirmDialogue()}>Remove</button>
-        <button>Edit</button>
-
-        {status !== "Completed" && (
-          <button onClick={handleCompleted}>Completed</button>
-        )}
-      </div>
-      {confirmToggle && <Confirm onClickFunction={handleRemove}></Confirm>}
-    </section>
+        <div className="description">{description}</div>
+        {refImage[0] && (
+          <div className="slider-container">
+            <h3>References</h3>
+            <SimpleSlider>
+              {refImage.map((image, i) => (
+                <div key={i} className="image-container">
+                  <img className="ref-image" src={image} alt="" />
+                </div>
+              ))}
+            </SimpleSlider>
+          </div>
+        )}{" "}
+        <p>Added: {added}</p>
+        <div className="button-container">
+          <button onClick={() => displayConfirmDialogue()}>Remove</button>
+          <button onClick={() => nav(`/commission/${comId}/edit`)}>Edit</button>
+          {status !== "Completed" && (
+            <button onClick={handleCompleted}>Completed</button>
+          )}
+        </div>
+        {confirmToggle && <Confirm onClickFunction={handleRemove}></Confirm>}
+      </section>
+    </>
   );
 };
 
