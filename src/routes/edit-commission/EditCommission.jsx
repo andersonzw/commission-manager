@@ -63,6 +63,8 @@ const EditCommission = () => {
     if (!userId) return;
     try {
       // Remove the commission from the database first
+      console.log(`Uploading ...`);
+      console.log(object);
       await deleteComObject(`users/${userId}/commissionList`, object);
       console.log("deleted");
       // Reupload the commission
@@ -79,9 +81,9 @@ const EditCommission = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(`submiting ${formValues}...`);
+    console.log(selectedImages);
 
-    console.log(formValues);
+    console.log(`submiting ${formValues}...`);
 
     await editCommission(formValues);
     // clear form
@@ -98,7 +100,6 @@ const EditCommission = () => {
   };
   const handleImageChange = (e) => {
     const files = e.target.files;
-
     // convert FileList object to an array of URLS
     const imageArray = Array.from(files).map((file) => {
       const reader = new FileReader();
@@ -115,6 +116,10 @@ const EditCommission = () => {
       setSelectedImages(urls);
     });
   };
+
+  useEffect(() => {
+    setFormValues({ ...formValues, refImage: selectedImages });
+  }, [selectedImages]);
   if (loading) return <div className="commission-section">Loading...</div>;
   return (
     <section className="commission-section">
@@ -240,9 +245,14 @@ const EditCommission = () => {
             />
           </div>
         </div>
-        <input id="file" type="file" onChange={handleImageChange} multiple />
+        <input
+          id="file"
+          type="file"
+          onChange={(e) => handleImageChange(e)}
+          multiple
+        />
         <button className="submit-button" type="submit">
-          Add
+          Confirm Edit
         </button>
       </form>
     </section>
