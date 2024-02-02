@@ -1,17 +1,10 @@
-const Radio = ({
-  name,
-  value,
-  labelText,
-  labelIcon,
-  checked,
-  onChange,
-}) => {
+const Radio = ({ name, value, labelText, labelIcon, checked, onChange }) => {
   return (
     <div className="radio-container">
       <input
+        id={value}
         type="radio"
         name={name}
-        id={value}
         value={value}
         checked={checked}
         onChange={onChange}

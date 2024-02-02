@@ -36,8 +36,6 @@ const Commissions = () => {
     }
   };
   const handleRemove = async () => {
-    console.log(commission[0]);
-    console.log("fired");
     await deleteCommission();
     nav("/");
     hideConfirmDialogue();

@@ -3,117 +3,99 @@ import "../add-commission/AddCommission.css";
 import {
   addCommissionToList,
   fetchCommissionList,
+  removeCommissionFromList,
 } from "../../util/store/commissionSlice";
 import { useEffect, useState } from "react";
 import PixivIcon from "../../assets/pixiv.svg";
 import SkebIcon from "../../assets/skeb.svg";
-import MailIcon from "../../assets/mail.svg";
 import Radio from "../../components/radio/Radio";
 import {
   fetchCommissionFromList,
   fetchList,
-  generateUniqueID,
   getDate,
 } from "../../util/util-functions";
 import { useNavigate, useParams } from "react-router-dom";
 import { selectCurrentUser } from "../../util/store/userSlice";
-import { uploadComObject } from "../../util/firebase/firebase.utils";
+import {
+  deleteComObject,
+  uploadComObject,
+} from "../../util/firebase/firebase.utils";
 // Add Commission Page
 const EditCommission = () => {
-  const [formValues, setFormValues] = useState("");
+  const [formValues, setFormValues] = useState({});
   const [selectedImages, setSelectedImages] = useState([]);
-
+  const [loading, setLoading] = useState(true);
   const { comId } = useParams();
   const user = useSelector(selectCurrentUser);
   const userId = user ? user.uid : null;
   const nav = useNavigate();
-  const date = new Date();
-  const defaultDate = date.toLocaleDateString("en-CA");
   const MAXCHARACTERS = 3000;
   const MAXCHARACTERS_NAME = 16;
   const [charCount, setCharCount] = useState(MAXCHARACTERS);
   const [nameCharCount, setNameCharCount] = useState(MAXCHARACTERS_NAME);
   const dispatch = useDispatch();
-
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
   useEffect(() => {
     const fetchUponLoad = async () => {
       const commissionToEdit = await fetchCommissionFromList(userId, comId);
-      setFormValues({
-        price: commissionToEdit.price,
-        description: commissionToEdit.description,
-        date: commissionToEdit.date,
-        status: commissionToEdit.status,
-        source: commissionToEdit.source,
-        name: commissionToEdit.name,
-      });
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        price: commissionToEdit.price ?? "",
+        description: commissionToEdit.description ?? "",
+        date: commissionToEdit.date ?? "",
+        status: commissionToEdit.status ?? "",
+        source: commissionToEdit.source ?? "",
+        name: commissionToEdit.name ?? "",
+        added: commissionToEdit.added ?? "",
+        refImage: commissionToEdit.refImage ?? "",
+        id: commissionToEdit.id ?? "",
+      }));
+      setLoading(false);
     };
 
     fetchUponLoad();
-
-    console.log(formValues);
   }, []);
   // Initial form
 
-  const uploadCommission = async (object) => {
+  const editCommission = async (object) => {
     if (!userId) return;
     try {
+      // Remove the commission from the database first
+      await deleteComObject(`users/${userId}/commissionList`, object);
+      console.log("deleted");
+      // Reupload the commission
       await uploadComObject(`users/${userId}/commissionList`, object);
-      console.log("Added");
-      console.log("fetching...");
+      console.log("uploaded");
+      // Fetch the commission back
       const comList = await fetchList(userId);
       dispatch(fetchCommissionList(comList));
+      console.log("fetched");
     } catch (error) {
-      console.log(error.message);
+      console.log(error);
     }
   };
 
   const handleSubmit = async (e) => {
-    console.log(user.uid);
-    const id = generateUniqueID();
     e.preventDefault();
-    const select = e.currentTarget;
-    const price = select.price.value;
-    const description = select.description.value;
-    const date = select.date.value;
-    const status = select.status.value;
-    const source = select["source-group"].value;
-    const name = select.name.value;
+    console.log(`submiting ${formValues}...`);
 
-    const commissionObject = {
-      price: price,
-      description: description,
-      date: date,
-      status: status,
-      source: source,
-      name: name,
-      id: id,
-      refImage: selectedImages,
-      added: getDate(0),
-    };
-    console.log(commissionObject);
-    // todo: add object to firebase databse
+    console.log(formValues);
 
-    // dispatch(addCommissionToList(commissionObject))
-
-    await uploadCommission(commissionObject);
+    await editCommission(formValues);
     // clear form
-    setFormValues(INIT_FORM);
-
+    setFormValues({});
     // //redirect
-    // nav(`/commission/${id}`)
+    nav(`/commission/${comId}`);
   };
+
   const handleNameInput = (e) => {
     setNameCharCount(MAXCHARACTERS_NAME - e.currentTarget.value.length);
   };
   const handleTextAreaInput = (e) => {
     setCharCount(MAXCHARACTERS - e.currentTarget.value.length);
   };
-
-  const handleDemoClick = () => {
-    setFormValues(DEMO_FORM);
-    console.log([comId, userId]);
-  };
-
   const handleImageChange = (e) => {
     const files = e.target.files;
 
@@ -133,10 +115,10 @@ const EditCommission = () => {
       setSelectedImages(urls);
     });
   };
-
+  if (loading) return <div className="commission-section">Loading...</div>;
   return (
     <section className="commission-section">
-      <h1>Add Commission</h1>
+      <h1>Edit Commission {comId}</h1>
       <form className="add-commission-form" onSubmit={handleSubmit}>
         <label htmlFor="name">Requester Name</label>
         <div className="name-div">
@@ -150,7 +132,6 @@ const EditCommission = () => {
             onChange={(e) => {
               setFormValues({ ...formValues, name: e.target.value });
               handleNameInput(e);
-              console.log(nameCharCount);
             }}
           />
           <span className="name-char-count">
@@ -214,7 +195,6 @@ const EditCommission = () => {
         >
           <option value="Accepted/WIP">Accepted/WIP</option>
           <option value="Completed">Completed</option>
-          <option value="Declined">Declined</option>
         </select>
 
         <div className="sources-input-container">
@@ -222,7 +202,7 @@ const EditCommission = () => {
           <div className="source-container">
             <Radio
               name="source-group"
-              value={formValues.source}
+              value="pixiv"
               labelText=""
               labelIcon={PixivIcon}
               checked={formValues.source === "pixiv"}
@@ -232,7 +212,7 @@ const EditCommission = () => {
             />
             <Radio
               name="source-group"
-              value={formValues.source}
+              value="skeb"
               labelText=""
               labelIcon={SkebIcon}
               checked={formValues.source === "skeb"}
@@ -242,7 +222,7 @@ const EditCommission = () => {
             />
             <Radio
               name="source-group"
-              value={formValues.source}
+              value="mail"
               labelText="Mail"
               checked={formValues.source === "mail"}
               onChange={(e) => {
@@ -251,7 +231,7 @@ const EditCommission = () => {
             />
             <Radio
               name="source-group"
-              value={formValues.source}
+              value="other"
               labelText="Other"
               checked={formValues.source === "other"}
               onChange={(e) => {
