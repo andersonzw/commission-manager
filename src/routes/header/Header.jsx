@@ -8,15 +8,14 @@ import resetPersistedState from "../../util/store/ResetPersistedState";
 const Header = () => {
   const nav = useNavigate();
   const currentUser = useSelector(selectCurrentUser);
-  const dispatch = useDispatch();
 
   const handleSignOut = async () => {
-    resetPersistedState()
+    
 
     try {
       await signOutUser();
       console.log("signed out");
-
+      resetPersistedState();
       nav("/en");
     } catch (error) {
       console.log("Error signing out:", error.message);
@@ -25,10 +24,9 @@ const Header = () => {
   return (
     <>
       <div className="header-section">
-        
         <div className="header-logo">
           <img src="/src/assets/fktnm.jpg" alt="logo" />
-        </div> 
+        </div>
         <div className="flexCenter user-icon-container">
           {currentUser ? currentUser.email : "guest"}
           <button onClick={() => handleSignOut()}>sign out</button>

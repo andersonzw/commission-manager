@@ -4,7 +4,7 @@ import {
   addCommissionToList,
   fetchCommissionList,
 } from "../../util/store/commissionSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PixivIcon from "../../assets/pixiv.svg";
 import SkebIcon from "../../assets/skeb.svg";
 import MailIcon from "../../assets/mail.svg";
@@ -29,20 +29,23 @@ const AddCommission = () => {
   const [charCount, setCharCount] = useState(MAXCHARACTERS);
   const [nameCharCount, setNameCharCount] = useState(MAXCHARACTERS_NAME);
   const dispatch = useDispatch();
+
   const INIT_FORM = {
     price: "",
     description: "",
-    date: defaultDate,
-    selected: "",
+    date: getDate(0.1),
+    status: "",
     source: "",
     name: "",
+    added: "",
+    refImage: [],
+    id: "",
   };
-
   const DEMO_FORM = {
     price: "120",
     description: "Some description",
-    date: defaultDate,
-    selected: "Completed",
+    date: getDate(1.5),
+    status: "Completed",
     source: "pixiv",
     name: "Meow",
   };
@@ -52,60 +55,49 @@ const AddCommission = () => {
   const uploadCommission = async (object) => {
     if (!userId) return;
     try {
+      // Upload to firebase
       await uploadComObject(`users/${userId}/commissionList`, object);
-      console.log("Added");
-      console.log("fetching...");
       const comList = await fetchList(userId);
+      // Re-fetch from firebase
       dispatch(fetchCommissionList(comList));
+      console.log("fetched");
     } catch (error) {
-      console.log(error.message);
+      console.log("Uplaod commission error");
+      console.log(error);
     }
   };
+  // Upon load, generate an ID and date
+  useEffect(() => {
+    setFormValues({ ...formValues, id: generateUniqueID(), added: getDate(0) });
+  }, []);
+  useEffect(() => {
+    console.log(formValues);
+  }, [formValues]);
 
   const handleSubmit = async (e) => {
-    console.log(user.uid);
-    const id = generateUniqueID();
     e.preventDefault();
-    const select = e.currentTarget;
-    const price = select.price.value;
-    const description = select.description.value;
-    const date = select.date.value;
-    const status = select.status.value;
-    const source = select["source-group"].value;
-    const name = select.name.value;
-
-    const commissionObject = {
-      price: price,
-      description: description,
-      date: date,
-      status: status,
-      source: source,
-      name: name,
-      id: id,
-      refImage: selectedImages,
-      added: getDate(0),
-    };
-    console.log(commissionObject);
-    // todo: add object to firebase databse
-
-    // dispatch(addCommissionToList(commissionObject))
-
-    await uploadCommission(commissionObject);
+    await uploadCommission(formValues);
     // clear form
-    setFormValues(INIT_FORM);
-
-    // //redirect
-    // nav(`/commission/${id}`)
+    setFormValues({});
+    nav(`/commission/${formValues.id}`);
   };
+
   const handleNameInput = (e) => {
-    setNameCharCount(MAXCHARACTERS_NAME - e.currentTarget.value.length)
-  }
+    setNameCharCount(MAXCHARACTERS_NAME - e.currentTarget.value.length);
+  };
   const handleTextAreaInput = (e) => {
     setCharCount(MAXCHARACTERS - e.currentTarget.value.length);
   };
-
   const handleDemoClick = () => {
-    setFormValues(DEMO_FORM);
+    setFormValues({
+      ...formValues,
+      price: "120",
+      description: "Some description",
+      date: getDate(2),
+      status: "Completed",
+      source: "pixiv",
+      name: "Meow",
+    });
   };
 
   const handleImageChange = (e) => {
@@ -130,7 +122,7 @@ const AddCommission = () => {
 
   return (
     <section className="commission-section">
-      <button onClick={handleDemoClick} className="demo-button">
+      <button className="demo-button" onClick={() => handleDemoClick()}>
         Demo Prefill
       </button>
       <h1>Add Commission</h1>
@@ -146,8 +138,7 @@ const AddCommission = () => {
             value={formValues.name}
             onChange={(e) => {
               setFormValues({ ...formValues, name: e.target.value });
-              handleNameInput(e)
-              console.log(nameCharCount);
+              handleNameInput(e);
             }}
           />
           <span className="name-char-count">
@@ -204,14 +195,13 @@ const AddCommission = () => {
         <select
           name="status"
           id="status"
-          value={formValues.selected}
+          value={formValues.status}
           onChange={(e) => {
-            setFormValues({ ...formValues, selected: e.target.value });
+            setFormValues({ ...formValues, status: e.target.value });
           }}
         >
           <option value="Accepted/WIP">Accepted/WIP</option>
           <option value="Completed">Completed</option>
-          <option value="Declined">Declined</option>
         </select>
 
         <div className="sources-input-container">
@@ -222,21 +212,49 @@ const AddCommission = () => {
               value="pixiv"
               labelText=""
               labelIcon={PixivIcon}
-              defaultChecked={true}
+              checked={formValues.source === "pixiv"}
+              onChange={(e) => {
+                setFormValues({ ...formValues, source: e.target.value });
+              }}
             />
             <Radio
               name="source-group"
               value="skeb"
               labelText=""
               labelIcon={SkebIcon}
+              checked={formValues.source === "skeb"}
+              onChange={(e) => {
+                setFormValues({ ...formValues, source: e.target.value });
+              }}
             />
-            <Radio name="source-group" value="mail" labelText="Mail" />
-            <Radio name="source-group" value="other" labelText="Other" />
+            <Radio
+              name="source-group"
+              value="mail"
+              labelText="Mail"
+              checked={formValues.source === "mail"}
+              onChange={(e) => {
+                setFormValues({ ...formValues, source: e.target.value });
+              }}
+            />
+            <Radio
+              name="source-group"
+              value="other"
+              labelText="Other"
+              checked={formValues.source === "other"}
+              onChange={(e) => {
+                setFormValues({ ...formValues, source: e.target.value });
+              }}
+            />
           </div>
         </div>
-        <input id="file" type="file" onChange={handleImageChange} multiple />
+        <input
+          id="file"
+          type="file"
+          onChange={(e) => handleImageChange(e)}
+          multiple
+        />
         <button className="submit-button" type="submit">
-          Add
+          Add Commission
         </button>
       </form>
     </section>

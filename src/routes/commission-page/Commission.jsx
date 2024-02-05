@@ -25,8 +25,9 @@ const Commissions = () => {
   const commission = commissionList.filter((obj) => {
     return obj.id === comId;
   });
+
   const { name, price, description, date, status, source, refImage, added } =
-    commission[0];
+    commission.length > 0 ? commission[0] : "";
 
   const deleteCommission = async () => {
     try {
@@ -38,14 +39,16 @@ const Commissions = () => {
   const handleRemove = async () => {
     await deleteCommission();
     nav("/");
-    hideConfirmDialogue();
     const comList = await fetchList(user.uid);
     dispatch(fetchCommissionList(comList));
+    hideConfirmDialogue();
   };
 
   const handleCompleted = () => {
     dispatch(changeStatusToComplete(userId));
   };
+
+  if (name === '' ) return <div>Loading...</div>;
   return (
     // userId = Id
     <>
@@ -65,7 +68,7 @@ const Commissions = () => {
           </span>
         </div>
         <div className="description">{description}</div>
-        {refImage[0] && (
+        {refImage !== '' && (
           <div className="slider-container">
             <h3>References</h3>
             <SimpleSlider>
@@ -76,7 +79,7 @@ const Commissions = () => {
               ))}
             </SimpleSlider>
           </div>
-        )}{" "}
+        )}
         <p>Added: {added}</p>
         <div className="button-container">
           <button onClick={() => displayConfirmDialogue()}>Remove</button>

@@ -11,9 +11,6 @@ import SideBarComCard from "../../components/sidebar-com-card/SideBarComCard";
 import { selectCurrentActiveTab } from "../../util/store/activeTabSlice";
 import { useEffect } from "react";
 import { selectCurrentUser } from "../../util/store/userSlice";
-import { db } from "../../util/firebase/firebase.utils";
-import { collection, getDocs, query } from "firebase/firestore";
-import { fetchList } from "../../util/util-functions";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -29,17 +26,12 @@ const Sidebar = () => {
 
   const today = new Date();
   const nav = useNavigate();
-  const handleFetch = async () => {
-    const comList = await fetchList(user.uid) 
-    dispatch(fetchCommissionList(comList));
-
-  };
 
   return (
     <div className="sidebar-outlet">
       <section className="sidebar-section">
         <h1>Commission List</h1>
-        <div className="commission-list">
+        <div className="commission-list completed-list">
           {sortedcommissionList.map((com, i) => {
             if (com.status !== "Accepted/WIP") {
               return;
@@ -49,7 +41,7 @@ const Sidebar = () => {
           })}
         </div>
         <h1>Completed</h1>
-        <div className="commission-list">
+        <div className="commission-list accepted-list">
           {sortedcommissionList.map((com, i) => {
             if (com.status === "Accepted/WIP") {
               return;
