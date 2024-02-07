@@ -11,7 +11,7 @@
   top: 0px; */
 }
 
-.sidebar-section >h1:first-child{
+.sidebar-section > h1:first-child {
   margin-top: 0;
   padding-top: 0;
 }
@@ -54,11 +54,21 @@
     #1cd8d28f 100%
   );
 
-
   box-shadow: 0 0 20px #eee;
   border-radius: 10px;
   display: block;
   outline: 1px solid rgba(70, 212, 158, 0.8);
 }
 
-         
+.sidebar-com-card.active.editing {
+  background-image: linear-gradient(
+    to right,
+    #ebdb7d8f 0%,
+    #edd09393 51%,
+    #d89c1c8f 100%
+  );
+  box-shadow: 0 0 20px #eee;
+  border-radius: 10px;
+  display: block;
+  outline: 1px solid rgba(212, 186, 70, 0.8);
+}

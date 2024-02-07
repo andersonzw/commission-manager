@@ -36,8 +36,16 @@ function App() {
   // Determine current active tab
   useEffect(() => {
     const divId = location.pathname.split("/");
-    dispatch(setCurrentActiveTab(divId[divId.length - 1]));
-    console.log("fired");
+    let editMode = false;
+    let currentTab = divId[divId.length - 1];
+    if (currentTab === "edit") {
+      currentTab = divId[divId.length - 2];
+      editMode = true;
+    }
+    dispatch(
+      setCurrentActiveTab({ currentTab: currentTab, editMode: editMode })
+    );
+    console.log("active tab is:", currentTab, editMode);
   }, [location, dispatch]);
   return (
     <div className=" App">
@@ -55,9 +63,11 @@ function App() {
             <Route index element={<AddCommission />} />
             <Route path="about" element={<About />} />
             <Route element={<ConfirmContextLayout />}>
-              <Route path="/commission/:comId" element={<Commissions />}/>
-              <Route path="/commission/:comId/edit" element={<EditCommission />} />
-
+              <Route path="/commission/:comId" element={<Commissions />} />
+              <Route
+                path="/commission/:comId/edit"
+                element={<EditCommission />}
+              />
             </Route>
           </Route>
         </Route>
