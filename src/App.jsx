@@ -1,7 +1,7 @@
 import "./App.css";
 import AddCommission from "./routes/add-commission/AddCommission";
 import Sidebar from "./routes/sidebar/Sidebar";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route, useLocation, Navigate } from "react-router-dom";
 import About from "./routes/about/About";
 import Commissions from "./routes/commission-page/Commission";
 import ConfirmContextLayout from "./util/context/ConfirmContextLayout";
@@ -11,7 +11,7 @@ import SignUp from "./routes/directory/sign-up/SignUp";
 import Header from "./routes/header/Header";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser, setCurrentUser } from "./util/store/userSlice";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./util/firebase/firebase.utils";
 import { setCurrentActiveTab } from "./util/store/activeTabSlice";
@@ -20,6 +20,7 @@ import EditCommission from "./routes/edit-commission/EditCommission";
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();
+  const signedIn = useSelector(selectCurrentUser)
   // Auth state change listener
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -56,7 +57,10 @@ function App() {
 
         <Route path="/en/sign-up" element={<SignUp />} />
 
-        <Route path="/" element={<Header />}>
+        <Route
+          path="/"
+          element={signedIn ? <Header /> : <Navigate to="/en" replace />}
+        >
           {/* outlet */}
           <Route path="/" element={<Sidebar />}>
             {/* outlet */}
