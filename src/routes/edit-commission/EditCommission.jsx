@@ -6,9 +6,9 @@ import {
   removeCommissionFromList,
 } from "../../util/store/commissionSlice";
 import { useEffect, useState } from "react";
-import PixivIcon from "../../assets/pixiv.svg";
-import SkebIcon from "../../assets/skeb.svg";
-import Radio from "../../components/radio/Radio";
+import PixivIcon from "/pixiv.svg";
+import SkebIcon from "/skeb.svg";
+import Radio from "../../components/radio/Radio"
 import {
   fetchCommissionFromList,
   fetchList,

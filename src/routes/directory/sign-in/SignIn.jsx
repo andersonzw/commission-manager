@@ -38,7 +38,7 @@ const SignIn = () => {
     <section className="flexCenter auth-section">
       <div className="directory-container sign-in-page-container">
         <div className="logo">
-          <img src="/src/assets/fktnm.jpg" alt="" />
+          <img src="/fktnm.jpg" alt="" />
         </div>
         <form className="innerWidth" onSubmit={handleSubmit}>
           <div className="flexColCenter innerWidth input-container">
@@ -67,7 +67,7 @@ const SignIn = () => {
         </form>
         <p>Sign in with Google</p>
         <div className="flexCenter google-logo">
-          <img src="/src/assets/google.svg" alt="Google Logo" />
+          <img src="/google.svg" alt="Google Logo" />
         </div>
         <Link to={"/en/sign-up"} className="create-an-account">
           Create an account

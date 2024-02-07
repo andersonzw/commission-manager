@@ -7,7 +7,7 @@ const Directory = () => {
     <section className="flexCenter auth-section">
       <div className="directory-container">
         <div className="logo">
-          <img src="/src/assets/fktnm.jpg" alt="" />
+          <img src="/s/fktnm.jpg" alt="" />
         </div>
         <div className="flexColCenter button-container">
           <button onClick={() => nav("/en/sign-up")} className="sign-up button">
@@ -19,7 +19,7 @@ const Directory = () => {
         </div>
         <p>Sign in with Google</p>
         <div className="flexCenter google-logo">
-          <img src="/src/assets/google.svg" alt="Google Logo" />
+          <img src="/s/google.svg" alt="Google Logo" />
         </div>
       </div>
     </section>

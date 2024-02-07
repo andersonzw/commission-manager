@@ -5,9 +5,9 @@ import {
   fetchCommissionList,
 } from "../../util/store/commissionSlice";
 import { useEffect, useState } from "react";
-import PixivIcon from "../../assets/pixiv.svg";
-import SkebIcon from "../../assets/skeb.svg";
-import MailIcon from "../../assets/mail.svg";
+import PixivIcon from "/pixiv.svg";
+import SkebIcon from "/skeb.svg";
+import MailIcon from "/mail.svg";
 import Radio from "../../components/radio/Radio";
 import {
   fetchList,
