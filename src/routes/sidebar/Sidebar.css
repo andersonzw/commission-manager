@@ -40,7 +40,9 @@
   border-radius: 12px;
   cursor: pointer;
 }
-
+.sidebar-com-card:hover {
+  background-color: rgba(156, 231, 215, 0.144);
+}
 .sidebar-com-card > div {
   display: flex;
   justify-content: space-between;
