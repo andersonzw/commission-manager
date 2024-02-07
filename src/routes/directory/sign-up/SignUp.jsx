@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import "../Directory.css";
 import { Link, useNavigate } from "react-router-dom";
 import { signUpUser } from "../../../util/firebase/firebase.utils";
+import { fetchList } from "../../../util/util-functions";
+import { useDispatch } from "react-redux";
+import { fetchCommissionList } from "../../../util/store/commissionSlice";
 const SignUp = () => {
+  const dispatch = useDispatch()
   const nav = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -14,9 +18,17 @@ const SignUp = () => {
     e.preventDefault();
     if (formData.password === formData.confirmPassword) {
       try {
-        const userCredential = await signUpUser(formData.email, formData.password);
+        const userCredential = await signUpUser(
+          formData.email,
+          formData.password
+        );
         console.log(userCredential);
+
+        // use usercredential to fetch and dispatch commission list
+        const comList = await fetchList(userCredential.user.uid);
+        dispatch(fetchCommissionList(comList));
         nav("/");
+
       } catch (error) {
         console.log(error.message);
       }

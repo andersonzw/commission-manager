@@ -1,85 +1,95 @@
 import { useDispatch, useSelector } from "react-redux";
-import "./AddCommission.css";
+import "../add-commission/AddCommission.css";
 import {
   addCommissionToList,
   fetchCommissionList,
+  removeCommissionFromList,
 } from "../../util/store/commissionSlice";
 import { useEffect, useState } from "react";
 import PixivIcon from "../../assets/pixiv.svg";
 import SkebIcon from "../../assets/skeb.svg";
-import MailIcon from "../../assets/mail.svg";
 import Radio from "../../components/radio/Radio";
 import {
+  fetchCommissionFromList,
   fetchList,
-  generateUniqueID,
   getDate,
 } from "../../util/util-functions";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { selectCurrentUser } from "../../util/store/userSlice";
-import { uploadComObject } from "../../util/firebase/firebase.utils";
+import {
+  deleteComObject,
+  uploadComObject,
+} from "../../util/firebase/firebase.utils";
 // Add Commission Page
-const AddCommission = () => {
+const EditCommission = () => {
+  const [formValues, setFormValues] = useState({});
+  const [selectedImages, setSelectedImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const { comId } = useParams();
   const user = useSelector(selectCurrentUser);
   const userId = user ? user.uid : null;
   const nav = useNavigate();
-  const date = new Date();
-  const defaultDate = date.toLocaleDateString("en-CA");
   const MAXCHARACTERS = 3000;
   const MAXCHARACTERS_NAME = 16;
   const [charCount, setCharCount] = useState(MAXCHARACTERS);
   const [nameCharCount, setNameCharCount] = useState(MAXCHARACTERS_NAME);
   const dispatch = useDispatch();
-
-  const INIT_FORM = {
-    price: "",
-    description: "",
-    date: getDate(0.1),
-    status: "",
-    source: "",
-    name: "",
-    added: "",
-    refImage: [],
-    id: "",
-  };
-  const DEMO_FORM = {
-    price: "120",
-    description: "Some description",
-    date: getDate(1.5),
-    status: "Completed",
-    source: "pixiv",
-    name: "Meow",
-  };
-  const [formValues, setFormValues] = useState(INIT_FORM);
-  const [selectedImages, setSelectedImages] = useState([]);
-
-  const uploadCommission = async (object) => {
-    if (!userId) return;
-    try {
-      // Upload to firebase
-      await uploadComObject(`users/${userId}/commissionList`, object);
-      const comList = await fetchList(userId);
-      // Re-fetch from firebase
-      dispatch(fetchCommissionList(comList));
-      console.log("fetched");
-    } catch (error) {
-      console.log("Uplaod commission error");
-      console.log(error);
-    }
-  };
-  // Upon load, generate an ID and date
-  useEffect(() => {
-    setFormValues({ ...formValues, id: generateUniqueID(), added: getDate(0) });
-  }, []);
   useEffect(() => {
     console.log(formValues);
   }, [formValues]);
+  useEffect(() => {
+    const fetchUponLoad = async () => {
+      const commissionToEdit = await fetchCommissionFromList(userId, comId);
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        price: commissionToEdit.price ?? "",
+        description: commissionToEdit.description ?? "",
+        date: commissionToEdit.date ?? "",
+        status: commissionToEdit.status ?? "",
+        source: commissionToEdit.source ?? "",
+        name: commissionToEdit.name ?? "",
+        added: commissionToEdit.added ?? "",
+        refImage: commissionToEdit.refImage ?? "",
+        id: commissionToEdit.id ?? "",
+      }));
+      setLoading(false);
+    };
+
+    fetchUponLoad();
+  }, []);
+  // Initial form
+
+  const editCommission = async (object) => {
+    if (!userId) return;
+    try {
+      // Remove the commission from the database first
+      console.log(`Uploading ...`);
+      console.log(object);
+      await deleteComObject(`users/${userId}/commissionList`, object);
+      console.log("deleted");
+      // Reupload the commission
+      await uploadComObject(`users/${userId}/commissionList`, object);
+      console.log("uploaded");
+      // Fetch the commission back
+      const comList = await fetchList(userId);
+      dispatch(fetchCommissionList(comList));
+      console.log("fetched");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    await uploadCommission(formValues);
+    console.log(selectedImages);
+
+    console.log(`submiting ${formValues}...`);
+
+    await editCommission(formValues);
     // clear form
     setFormValues({});
-    nav(`/commission/${formValues.id}`);
+    // //redirect
+    nav(`/commission/${comId}`);
   };
 
   const handleNameInput = (e) => {
@@ -88,21 +98,8 @@ const AddCommission = () => {
   const handleTextAreaInput = (e) => {
     setCharCount(MAXCHARACTERS - e.currentTarget.value.length);
   };
-  const handleDemoClick = () => {
-    setFormValues({
-      ...formValues,
-      price: "120",
-      description: "Some description",
-      date: getDate(2),
-      status: "Completed",
-      source: "pixiv",
-      name: "Meow",
-    });
-  };
-
   const handleImageChange = (e) => {
     const files = e.target.files;
-
     // convert FileList object to an array of URLS
     const imageArray = Array.from(files).map((file) => {
       const reader = new FileReader();
@@ -120,12 +117,13 @@ const AddCommission = () => {
     });
   };
 
+  useEffect(() => {
+    setFormValues({ ...formValues, refImage: selectedImages });
+  }, [selectedImages]);
+  if (loading) return <div className="commission-section">Loading...</div>;
   return (
     <section className="commission-section">
-      <button className="demo-button" onClick={() => handleDemoClick()}>
-        Demo Prefill
-      </button>
-      <h1>Add Commission</h1>
+      <h1>Edit Commission {comId}</h1>
       <form className="add-commission-form" onSubmit={handleSubmit}>
         <label htmlFor="name">Requester Name</label>
         <div className="name-div">
@@ -254,11 +252,11 @@ const AddCommission = () => {
           multiple
         />
         <button className="submit-button" type="submit">
-          Add Commission
+          Confirm Edit
         </button>
       </form>
     </section>
   );
 };
 
-export default AddCommission;
+export default EditCommission;

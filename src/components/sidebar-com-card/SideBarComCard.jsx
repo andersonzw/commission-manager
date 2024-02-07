@@ -19,10 +19,10 @@ const SideBarComCard = ({ com, today }) => {
       <div>
         <span>Request ID: {com.id}</span> <span> ${com.price}</span>
       </div>
-      <span>
+     { com.status !== "Completed" ? <span>
         Due in:{" "}
         {Math.floor((new Date(com.date) - today) / (1000 * 60 * 60 * 24))} days
-      </span>
+      </span> : <span></span>}
     </div>
   );
 };

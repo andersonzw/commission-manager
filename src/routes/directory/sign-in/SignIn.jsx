@@ -3,27 +3,35 @@ import "../Directory.css";
 import "./SignIn.css";
 import { Link, useNavigate } from "react-router-dom";
 
-import {signInUser } from "../../../util/firebase/firebase.utils";
+import { signInUser } from "../../../util/firebase/firebase.utils";
+import resetPersistedState from "../../../util/store/ResetPersistedState";
+import { fetchList } from "../../../util/util-functions";
+import { useDispatch, useSelector } from "react-redux";
+import { selectCurrentUser } from "../../../util/store/userSlice";
+import { fetchCommissionList } from "../../../util/store/commissionSlice";
 const SignIn = () => {
+  const dispatch = useDispatch();
   const nav = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const user = useSelector(selectCurrentUser);
 
-//  handle sign in
+  //  handle sign in
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const userCredential = await signInUser(email, password)
-      console.log(userCredential);
-        nav('/')
+      const userCredential = await signInUser(email, password);
+      
+      // use usercredential to fetch and dispatch commission list
+      const comList = await fetchList(userCredential.user.uid);
+      dispatch(fetchCommissionList(comList));
+      nav("/");
+
     } catch (error) {
-      console.log(error.message);
-      setEmail('')
-      setPassword('')
-  
+      alert(error.message);
+      setEmail("");
+      setPassword("");
     }
-
-
   };
 
   return (

@@ -14,7 +14,6 @@ export const ConfirmProvider = ({ children }) => {
     console.log(confirmToggle);
   };
   const hideConfirmDialogue = () => {
-
     setConfirmToggle(false);
   };
   const value = { confirmToggle, hideConfirmDialogue, displayConfirmDialogue };

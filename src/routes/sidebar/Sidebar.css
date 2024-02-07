@@ -7,6 +7,13 @@
   flex-direction: column;
   margin-bottom: auto;
   padding: 2rem 2rem;
+  /* position: sticky;
+  top: 0px; */
+}
+
+.sidebar-section >h1:first-child{
+  margin-top: 0;
+  padding-top: 0;
 }
 .sidebar-outlet {
   display: flex;
@@ -22,12 +29,16 @@
   flex-direction: column;
   gap: 1rem;
 }
+.accepted-list {
+  margin-bottom: 2rem;
+}
 .sidebar-com-card {
   display: flex;
   flex-direction: column;
   outline: 1px solid rgba(70, 212, 158, 0.4);
   padding: 0.5rem;
   border-radius: 12px;
+  cursor: pointer;
 }
 
 .sidebar-com-card > div {
@@ -35,8 +46,6 @@
   justify-content: space-between;
 }
 
-.sidebar-com-card.active {
-}
 .sidebar-com-card.active {
   background-image: linear-gradient(
     to right,
@@ -51,3 +60,5 @@
   display: block;
   outline: 1px solid rgba(70, 212, 158, 0.8);
 }
+
+         

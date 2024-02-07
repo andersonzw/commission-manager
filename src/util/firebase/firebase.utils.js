@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { createUserWithEmailAndPassword, getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import {deleteDoc, doc, getFirestore, setDoc} from 'firebase/firestore'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -33,3 +34,12 @@ export const signInUser = (email, password) => signInWithEmailAndPassword(auth, 
 
 // Sign Out User
 export const signOutUser = () => signOut(auth);
+
+export const dbQuery = (path) => query(collection(db, path));
+export const db = getFirestore()
+
+//Upload document
+export const uploadComObject = (path, object) => setDoc(doc(db, path, object.id), object)
+
+//Remove document
+export const deleteComObject = (path, object) => deleteDoc(doc(db, path, object.id), object)
