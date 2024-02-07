@@ -2,13 +2,11 @@ import React, { useState } from "react";
 import "../Directory.css";
 import "./SignIn.css";
 import { Link, useNavigate } from "react-router-dom";
-
 import { signInUser } from "../../../util/firebase/firebase.utils";
-import resetPersistedState from "../../../util/store/ResetPersistedState";
 import { fetchList } from "../../../util/util-functions";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../util/store/userSlice";
-import { fetchCommissionList } from "../../../util/store/commissionSlice";
+import { fetchCommissionList } from "../../../util/store/commissionSlice"; 
 const SignIn = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
