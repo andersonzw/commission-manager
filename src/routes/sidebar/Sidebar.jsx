@@ -1,20 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import "./Sidebar.css";
-import {
-  addCommissionToList,
-  fetchCommissionList,
-  selectComList,
-} from "../../util/store/commissionSlice";
-import { Link, Outlet, useNavigate } from "react-router-dom";
-import resetPersistedState from "../../util/store/ResetPersistedState";
+import { selectComList } from "../../util/store/commissionSlice";
+import { Outlet, useNavigate } from "react-router-dom";
 import SideBarComCard from "../../components/sidebar-com-card/SideBarComCard";
-import { selectCurrentActiveTab } from "../../util/store/activeTabSlice";
-import { useEffect } from "react";
-import { selectCurrentUser } from "../../util/store/userSlice";
 
 const Sidebar = () => {
-  const dispatch = useDispatch();
-  const user = useSelector(selectCurrentUser);
   const commissionList = useSelector(selectComList);
 
   // Sort commission list by due dates

@@ -1,15 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import "./Commission.css";
 import {
-  removeCommissionFromList,
+
   changeStatusToComplete,
-  selectComList,
+
   fetchCommissionList,
 } from "../../util/store/commissionSlice";
-import { Outlet, useNavigate, useParams } from "react-router-dom";
+import {useNavigate, useParams } from "react-router-dom";
 import SimpleSlider from "../../components/slider/Slider";
 import Confirm from "../../components/confirmation/Confirm";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ConfirmContext } from "../../util/context/confirm.context";
 import { deleteComObject } from "../../util/firebase/firebase.utils";
 import { selectCurrentUser } from "../../util/store/userSlice";
@@ -21,17 +21,38 @@ const Commissions = () => {
   const { comId } = useParams();
   const { confirmToggle, hideConfirmDialogue, displayConfirmDialogue } =
     useContext(ConfirmContext);
-  const commissionList = useSelector(selectComList);
-  const commission = commissionList.filter((obj) => {
-    return obj.id === comId;
-  });
+
+  const [loading, setLoading] = useState(true);
+  const [pageContent, setPageContent] = useState({});
+  // Upon page load, fetch commission
+  useEffect(() => {
+    const loadPage = async () => {
+      try {
+        setLoading(true);
+        const commissionList = await fetchList(user.uid);
+        const commission = commissionList.filter((obj) => {
+          return obj.id === comId;
+        });
+        setPageContent(commission[0]);
+        setLoading(false);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    loadPage();
+    console.log("pageLoaded (state not yet updated):", pageContent);
+  }, [comId]);
+
+  useEffect(() => {
+    console.log("Page updated, state updated:", pageContent);
+  }, [pageContent]);
 
   const { name, price, description, date, status, source, refImage, added } =
-    commission.length > 0 ? commission[0] : "";
+    pageContent;
 
   const deleteCommission = async () => {
     try {
-      await deleteComObject(`users/${user.uid}/commissionList`, commission[0]);
+      await deleteComObject(`users/${user.uid}/commissionList`, pageContent);
     } catch (error) {
       console.log(error);
     }
@@ -48,7 +69,7 @@ const Commissions = () => {
     dispatch(changeStatusToComplete(userId));
   };
 
-  if (name === '' ) return <div>Loading...</div>;
+  if (loading) return <div className=" commission-section">Loading...</div>;
   return (
     // userId = Id
     <>
@@ -68,7 +89,7 @@ const Commissions = () => {
           </span>
         </div>
         <div className="description">{description}</div>
-        {refImage !== '' && (
+        {/* {refImage !== "" && (
           <div className="slider-container">
             <h3>References</h3>
             <SimpleSlider>
@@ -79,7 +100,7 @@ const Commissions = () => {
               ))}
             </SimpleSlider>
           </div>
-        )}
+        )} */}
         <p>Added: {added}</p>
         <div className="button-container">
           <button onClick={() => displayConfirmDialogue()}>Remove</button>
