@@ -16,11 +16,13 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./util/firebase/firebase.utils";
 import { setCurrentActiveTab } from "./util/store/activeTabSlice";
 import EditCommission from "./routes/edit-commission/EditCommission";
+import ThemeContextLayout from "./util/context/ThemeContextLayout";
+import { Box, LinearProgress } from "@mui/material";
 
 function App() {
   const location = useLocation();
   const dispatch = useDispatch();
-  const signedIn = useSelector(selectCurrentUser)
+  const signedIn = useSelector(selectCurrentUser);
   // Auth state change listener
   useEffect(() => {
     const listen = onAuthStateChanged(auth, (user) => {
@@ -51,27 +53,29 @@ function App() {
   return (
     <div className=" App">
       <Routes>
-        <Route path="/en" element={<Directory />} />
+        <Route element={<ThemeContextLayout />}>
+          <Route path="/en" element={<Directory />} />
 
-        <Route path="/en/sign-in" element={<SignIn />} />
+          <Route path="/en/sign-in" element={<SignIn />} />
 
-        <Route path="/en/sign-up" element={<SignUp />} />
+          <Route path="/en/sign-up" element={<SignUp />} />
 
-        <Route
-          path="/"
-          element={signedIn ? <Header /> : <Navigate to="/en" replace />}
-        >
-          {/* outlet */}
-          <Route path="/" element={<Sidebar />}>
+          <Route
+            path="/"
+            element={signedIn ? <Header /> : <Navigate to="/en" replace />}
+          >
             {/* outlet */}
-            <Route index element={<AddCommission />} />
-            <Route path="about" element={<About />} />
-            <Route element={<ConfirmContextLayout />}>
-              <Route path="/commission/:comId" element={<Commissions />} />
-              <Route
-                path="/commission/:comId/edit"
-                element={<EditCommission />}
-              />
+            <Route path="/" element={<Sidebar />}>
+              {/* outlet */}
+              <Route index element={<AddCommission />} />
+              <Route path="about" element={<About />} />
+              <Route element={<ConfirmContextLayout />}>
+                <Route path="/commission/:comId" element={<Commissions />} />
+                <Route
+                  path="/commission/:comId/edit"
+                  element={<EditCommission />}
+                />
+              </Route>
             </Route>
           </Route>
         </Route>

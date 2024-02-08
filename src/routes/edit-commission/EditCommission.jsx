@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import PixivIcon from "/pixiv.svg";
 import SkebIcon from "/skeb.svg";
-import Radio from "../../components/radio/Radio"
+import Radio from "../../components/radio/Radio";
 import {
   fetchCommissionFromList,
   fetchList,
@@ -20,11 +20,12 @@ import {
   deleteComObject,
   uploadComObject,
 } from "../../util/firebase/firebase.utils";
+import { selectGlobalLoad, setLoading } from "../../util/store/globalLoadSlice";
 // Add Commission Page
 const EditCommission = () => {
   const [formValues, setFormValues] = useState({});
   const [selectedImages, setSelectedImages] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [fetching, setFetching] = useState(true);
   const { comId } = useParams();
   const user = useSelector(selectCurrentUser);
   const userId = user ? user.uid : null;
@@ -39,6 +40,7 @@ const EditCommission = () => {
   }, [formValues]);
   useEffect(() => {
     const fetchUponLoad = async () => {
+      dispatch(setLoading(true))
       const commissionToEdit = await fetchCommissionFromList(userId, comId);
       setFormValues((prevValues) => ({
         ...prevValues,
@@ -52,7 +54,8 @@ const EditCommission = () => {
         refImage: commissionToEdit.refImage ?? "",
         id: commissionToEdit.id ?? "",
       }));
-      setLoading(false);
+      setFetching(false);
+      dispatch(setLoading(false))
     };
 
     fetchUponLoad();
@@ -76,6 +79,7 @@ const EditCommission = () => {
       console.log("fetched");
     } catch (error) {
       console.log(error);
+      alert(error)
     }
   };
 
@@ -120,7 +124,7 @@ const EditCommission = () => {
   useEffect(() => {
     setFormValues({ ...formValues, refImage: selectedImages });
   }, [selectedImages]);
-  if (loading) return <div className="commission-section">Loading...</div>;
+  if (fetching) return <div className="commission-section">Loading...</div>;
   return (
     <section className="commission-section">
       <h1>Edit Commission {comId}</h1>

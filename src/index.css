@@ -117,3 +117,6 @@ input {
 input:focus {
   outline: 1px solid var(--primary);
 }
+.progress-bar {
+  color: var(--primary);
+}

@@ -7,6 +7,7 @@ import persistStore from "redux-persist/es/persistStore";
 const persistConfig = {
   key: 'root',
   storage,
+  blacklist: 'globalLoad'
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

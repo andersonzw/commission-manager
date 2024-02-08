@@ -48,7 +48,7 @@ const Commissions = () => {
     dispatch(changeStatusToComplete(userId));
   };
 
-  if (name === '' ) return <div>Loading...</div>;
+  if (name === "") return <div>Loading...</div>;
   return (
     // userId = Id
     <>
@@ -68,7 +68,7 @@ const Commissions = () => {
           </span>
         </div>
         <div className="description">{description}</div>
-        {refImage !== '' && (
+        {refImage !== "" && (
           <div className="slider-container">
             <h3>References</h3>
             <SimpleSlider>
