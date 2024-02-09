@@ -7,31 +7,32 @@ import { fetchList } from "../../../util/util-functions";
 import { useDispatch, useSelector } from "react-redux";
 import { selectCurrentUser } from "../../../util/store/userSlice";
 import { fetchCommissionList } from "../../../util/store/commissionSlice";
-import { Box, LinearProgress, colors } from "@mui/material";
-import { red } from "@mui/material/colors";
-import { selectGlobalLoad, setLoading } from "../../../util/store/globalLoadSlice";
+
+import {
+  selectGlobalLoad,
+  setLoading,
+} from "../../../util/store/globalLoadSlice";
+import GoogleSignInButton from "../../../components/google-sign-in-button/GoogleSignIn";
 const SignIn = () => {
   const dispatch = useDispatch();
   const nav = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const user = useSelector(selectCurrentUser);
-  const loading = useSelector(selectGlobalLoad)
 
   //  handle sign in
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      dispatch(setLoading(true))
+      dispatch(setLoading(true));
       const userCredential = await signInUser(email, password);
 
       // use usercredential to fetch and dispatch commission list
       const comList = await fetchList(userCredential.user.uid);
       dispatch(fetchCommissionList(comList));
       nav("/");
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
     } catch (error) {
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
       alert(error.message);
       setEmail("");
       setPassword("");
@@ -40,7 +41,6 @@ const SignIn = () => {
 
   return (
     <>
-
       <section className="flexCenter auth-section">
         <div className="directory-container sign-in-page-container">
           <div className="logo">
@@ -71,10 +71,7 @@ const SignIn = () => {
               <button className="sign-in-page button">Sign In</button>
             </div>
           </form>
-          <p>Sign in with Google</p>
-          <div className="flexCenter google-logo">
-            <img src="/google.svg" alt="Google Logo" />
-          </div>
+          <GoogleSignInButton />
           <Link to={"/en/sign-up"} className="create-an-account">
             Create an account
           </Link>

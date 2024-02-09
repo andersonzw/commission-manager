@@ -5,8 +5,10 @@ import { signUpUser } from "../../../util/firebase/firebase.utils";
 import { fetchList } from "../../../util/util-functions";
 import { useDispatch } from "react-redux";
 import { fetchCommissionList } from "../../../util/store/commissionSlice";
+import { setLoading } from "../../../util/store/globalLoadSlice";
+import GoogleSignInButton from "../../../components/google-sign-in-button/GoogleSignIn";
 const SignUp = () => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const nav = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -16,6 +18,7 @@ const SignUp = () => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    dispatch(setLoading(true));
     if (formData.password === formData.confirmPassword) {
       try {
         const userCredential = await signUpUser(
@@ -28,13 +31,13 @@ const SignUp = () => {
         const comList = await fetchList(userCredential.user.uid);
         dispatch(fetchCommissionList(comList));
         nav("/");
-
       } catch (error) {
-        console.log(error.message);
+        alert(error.message);
       }
     } else {
       return;
     }
+    dispatch(setLoading(false));
   };
   return (
     <section className="auth-section flexCenter">
@@ -82,10 +85,7 @@ const SignUp = () => {
             <button className="sign-in-page button">Sign Up</button>
           </div>
         </form>
-        <p>Sign in with Google</p>
-        <div className="flexCenter google-logo">
-          <img src="/google.svg" alt="Google Logo" />
-        </div>
+        <GoogleSignInButton />
         <Link to={"/en/sign-in"} className="create-an-account">
           Already have an account?
         </Link>

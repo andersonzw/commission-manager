@@ -8,6 +8,7 @@ const Radio = ({ name, value, labelText, labelIcon, checked, onChange }) => {
         value={value}
         checked={checked}
         onChange={onChange}
+        required
       />
       <label htmlFor={value}>
         {labelIcon && (

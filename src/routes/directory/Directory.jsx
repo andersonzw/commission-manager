@@ -1,6 +1,7 @@
 import React from "react";
 import "./Directory.css";
 import { useNavigate } from "react-router-dom";
+import GoogleSignInButton from "../../components/google-sign-in-button/GoogleSignIn";
 const Directory = () => {
   const nav = useNavigate();
   return (
@@ -17,10 +18,7 @@ const Directory = () => {
             Sign in
           </button>
         </div>
-        <p>Sign in with Google</p>
-        <div className="flexCenter google-logo">
-          <img src="/google.svg" alt="Google Logo" />
-        </div>
+        <GoogleSignInButton />
       </div>
     </section>
   );

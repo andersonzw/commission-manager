@@ -14,6 +14,7 @@ import { ConfirmContext } from "../../util/context/confirm.context";
 import { deleteComObject } from "../../util/firebase/firebase.utils";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { fetchList } from "../../util/util-functions";
+import { setLoading } from "../../util/store/globalLoadSlice";
 const Commissions = () => {
   const user = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
@@ -33,14 +34,18 @@ const Commissions = () => {
     try {
       await deleteComObject(`users/${user.uid}/commissionList`, commission[0]);
     } catch (error) {
-      console.log(error);
+      alert(error);
+      dispatch(setLoading(false));
     }
   };
   const handleRemove = async () => {
+    dispatch(setLoading(true));
     await deleteCommission();
-    nav("/");
     const comList = await fetchList(user.uid);
+    nav("/");
     dispatch(fetchCommissionList(comList));
+
+    dispatch(setLoading(false));
     hideConfirmDialogue();
   };
 
@@ -68,7 +73,7 @@ const Commissions = () => {
           </span>
         </div>
         <div className="description">{description}</div>
-        {refImage !== "" && (
+        {refImage !== "" ? (
           <div className="slider-container">
             <h3>References</h3>
             <SimpleSlider>
@@ -79,7 +84,7 @@ const Commissions = () => {
               ))}
             </SimpleSlider>
           </div>
-        )}
+        ) : null}
         <p>Added: {added}</p>
         <div className="button-container">
           <button onClick={() => displayConfirmDialogue()}>Remove</button>

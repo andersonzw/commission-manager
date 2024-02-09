@@ -17,6 +17,7 @@ import {
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { uploadComObject } from "../../util/firebase/firebase.utils";
+import { setLoading } from "../../util/store/globalLoadSlice";
 // Add Commission Page
 const AddCommission = () => {
   const user = useSelector(selectCurrentUser);
@@ -33,8 +34,8 @@ const AddCommission = () => {
   const INIT_FORM = {
     price: "",
     description: "",
-    date: getDate(0.1),
-    status: "",
+    date: getDate(1),
+    status: "Accepted/WIP",
     source: "",
     name: "",
     added: "",
@@ -55,15 +56,16 @@ const AddCommission = () => {
   const uploadCommission = async (object) => {
     if (!userId) return;
     try {
+      dispatch(setLoading(true))
       // Upload to firebase
       await uploadComObject(`users/${userId}/commissionList`, object);
       const comList = await fetchList(userId);
       // Re-fetch from firebase
       dispatch(fetchCommissionList(comList));
-      console.log("fetched");
+      dispatch(setLoading(false))
     } catch (error) {
-      console.log("Uplaod commission error");
-      console.log(error);
+      alert("Upload commission error");
+      dispatch(setLoading(false))
     }
   };
   // Upon load, generate an ID and date
@@ -209,6 +211,7 @@ const AddCommission = () => {
           <div className="source-container">
             <Radio
               name="source-group"
+              
               value="pixiv"
               labelText=""
               labelIcon={PixivIcon}

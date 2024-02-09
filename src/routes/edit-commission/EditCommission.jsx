@@ -85,6 +85,7 @@ const EditCommission = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    dispatch(setLoading(true))
     console.log(selectedImages);
 
     console.log(`submiting ${formValues}...`);
@@ -94,6 +95,7 @@ const EditCommission = () => {
     setFormValues({});
     // //redirect
     nav(`/commission/${comId}`);
+    dispatch(setLoading(false))
   };
 
   const handleNameInput = (e) => {
