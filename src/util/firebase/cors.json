@@ -1,0 +1,14 @@
+[
+  {
+    "origin": [
+      "http://localhost:5173",
+      "https://commission-manager.netlify.app/"
+    ],
+    "method": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    "responseHeader": ["Content-Type"],
+    "maxAgeSeconds": 3600
+  }
+]
+
+// gsutil cors set "/home/vboxuser/repos/commission-manager/src/util/firebase/cors.json" gs://commission-manager-901ae.appspot.com
+

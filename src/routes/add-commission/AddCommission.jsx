@@ -16,8 +16,12 @@ import {
 } from "../../util/util-functions";
 import { useNavigate } from "react-router-dom";
 import { selectCurrentUser } from "../../util/store/userSlice";
-import { uploadComObject } from "../../util/firebase/firebase.utils";
+import {
+  uploadComObject,
+  uploadImage,
+} from "../../util/firebase/firebase.utils";
 import { setLoading } from "../../util/store/globalLoadSlice";
+import { refEqual } from "firebase/firestore";
 // Add Commission Page
 const AddCommission = () => {
   const user = useSelector(selectCurrentUser);
@@ -29,6 +33,7 @@ const AddCommission = () => {
   const MAXCHARACTERS_NAME = 16;
   const [charCount, setCharCount] = useState(MAXCHARACTERS);
   const [nameCharCount, setNameCharCount] = useState(MAXCHARACTERS_NAME);
+  const [filesToUpload, setFilesToUpload] = useState([]);
   const dispatch = useDispatch();
 
   const INIT_FORM = {
@@ -51,27 +56,37 @@ const AddCommission = () => {
     name: "Meow",
   };
   const [formValues, setFormValues] = useState(INIT_FORM);
-  const [selectedImages, setSelectedImages] = useState([]);
 
   const uploadCommission = async (object) => {
     if (!userId) return;
     try {
-      dispatch(setLoading(true))
+      dispatch(setLoading(true));
+
+      // Begin uploading image references
+      const uploadPromises = filesToUpload.map((file) =>
+        uploadImage(file, userId, formValues.id)
+      );
+      const fileList = await Promise.all(uploadPromises);
+
       // Upload to firebase
-      await uploadComObject(`users/${userId}/commissionList`, object);
+      await uploadComObject(`users/${userId}/commissionList`, {
+        ...object,
+        refImage: fileList,
+      });
       const comList = await fetchList(userId);
       // Re-fetch from firebase
       dispatch(fetchCommissionList(comList));
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
     } catch (error) {
       alert("Upload commission error");
-      dispatch(setLoading(false))
+      dispatch(setLoading(false));
     }
   };
   // Upon load, generate an ID and date
   useEffect(() => {
     setFormValues({ ...formValues, id: generateUniqueID(), added: getDate(0) });
   }, []);
+
   useEffect(() => {
     console.log(formValues);
   }, [formValues]);
@@ -103,23 +118,8 @@ const AddCommission = () => {
   };
 
   const handleImageChange = (e) => {
-    const files = e.target.files;
-
-    // convert FileList object to an array of URLS
-    const imageArray = Array.from(files).map((file) => {
-      const reader = new FileReader();
-      return new Promise((resolve) => {
-        reader.onloadend = () => {
-          resolve(reader.result);
-        };
-        reader.readAsDataURL(file);
-      });
-    });
-
-    // Set the selected images once all urls are resolved
-    Promise.all(imageArray).then((urls) => {
-      setSelectedImages(urls);
-    });
+    const files = Array.from(e.target.files);
+    setFilesToUpload(files);
   };
 
   return (
@@ -211,7 +211,6 @@ const AddCommission = () => {
           <div className="source-container">
             <Radio
               name="source-group"
-              
               value="pixiv"
               labelText=""
               labelIcon={PixivIcon}

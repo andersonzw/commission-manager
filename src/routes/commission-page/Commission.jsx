@@ -15,6 +15,7 @@ import { deleteComObject } from "../../util/firebase/firebase.utils";
 import { selectCurrentUser } from "../../util/store/userSlice";
 import { fetchList } from "../../util/util-functions";
 import { setLoading } from "../../util/store/globalLoadSlice";
+import Carousel from "nuka-carousel";
 const Commissions = () => {
   const user = useSelector(selectCurrentUser);
   const dispatch = useDispatch();
@@ -29,6 +30,7 @@ const Commissions = () => {
 
   const { name, price, description, date, status, source, refImage, added } =
     commission.length > 0 ? commission[0] : "";
+ 
 
   const deleteCommission = async () => {
     try {
@@ -73,16 +75,16 @@ const Commissions = () => {
           </span>
         </div>
         <div className="description">{description}</div>
-        {refImage !== "" ? (
+        {refImage && refImage.length !== 0 ? (
           <div className="slider-container">
             <h3>References</h3>
-            <SimpleSlider>
+            <Carousel slidesToShow={2} slidesToScroll={2}>
               {refImage.map((image, i) => (
                 <div key={i} className="image-container">
                   <img className="ref-image" src={image} alt="" />
                 </div>
               ))}
-            </SimpleSlider>
+            </Carousel>
           </div>
         ) : null}
         <p>Added: {added}</p>
