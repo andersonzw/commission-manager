@@ -11,6 +11,8 @@ import SideBarComCard from "../../components/sidebar-com-card/SideBarComCard";
 import { selectCurrentActiveTab } from "../../util/store/activeTabSlice";
 import { useEffect } from "react";
 import { selectCurrentUser } from "../../util/store/userSlice";
+import { setLoading } from "../../util/store/globalLoadSlice";
+import { fetchList } from "../../util/util-functions";
 
 const Sidebar = () => {
   const dispatch = useDispatch();
@@ -26,6 +28,19 @@ const Sidebar = () => {
 
   const today = new Date();
   const nav = useNavigate();
+
+  // Refetch comission list to ensure data is fresh
+  useEffect(() => {
+    const fetch = async () => {
+      dispatch(setLoading(true));
+      const comList = await fetchList(user.uid);
+      dispatch(fetchCommissionList(comList));
+      dispatch(setLoading(false));
+    };
+    fetch();
+
+    console.log("refetched");
+  }, []);
 
   return (
     <div className="sidebar-outlet">
